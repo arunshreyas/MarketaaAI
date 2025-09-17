@@ -22,8 +22,11 @@ const Navigation = () => {
             <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors">
               Features
             </a>
-            <a href="#contact" className="text-foreground/80 hover:text-foreground transition-colors">
-              Contact
+            <a href="#about" className="text-foreground/80 hover:text-foreground transition-colors">
+              About
+            </a>
+            <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-colors">
+              Pricing
             </a>
           </div>
           
@@ -76,8 +79,11 @@ const Navigation = () => {
               <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors">
                 Features
               </a>
-              <a href="#contact" className="text-foreground/80 hover:text-foreground transition-colors">
-                Contact
+              <a href="#about" className="text-foreground/80 hover:text-foreground transition-colors">
+                About
+              </a>
+              <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-colors">
+                Pricing
               </a>
               <div className="flex flex-col space-y-2 pt-4 border-t border-border/20">
                 {user ? (
