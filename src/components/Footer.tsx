@@ -10,7 +10,7 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-12">
           {/* Brand */}
           <div className="space-y-4">
-            <div className="font-heading text-2xl font-bold gradient-electric bg-clip-text text-transparent">
+            <div className="font-heading text-2xl font-bold bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent">
               Marketa AI
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">

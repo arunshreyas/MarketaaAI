@@ -27,7 +27,7 @@ const Hero = () => {
           {/* Main Heading */}
           <h1 className="text-5xl md:text-7xl font-bold font-heading mb-6 leading-tight">
             Transform Your
-            <span className="gradient-electric bg-clip-text text-transparent block">
+            <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block">
               Digital Marketing
             </span>
             with AI
