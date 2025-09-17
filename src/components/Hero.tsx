@@ -1,8 +1,44 @@
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { useState } from "react";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-marketa.jpg";
 
 const Hero = () => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { toast } = useToast();
+
+  const handleWaitlistSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsSubmitting(true);
+    try {
+      const { error } = await supabase
+        .from('Emails')
+        .insert([{ Email: email }]);
+
+      if (error) throw error;
+
+      toast({
+        title: "Welcome to the waitlist!",
+        description: "We'll notify you as soon as Marketa AI launches.",
+      });
+      setEmail("");
+    } catch (error: any) {
+      toast({
+        title: "Error",
+        description: error.message || "Failed to join waitlist. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Background Image */}
@@ -40,7 +76,54 @@ const Hero = () => {
           </p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <div className="space-y-8">
+            {/* Waitlist Form */}
+            <div className="max-w-md mx-auto">
+              <div className="text-center mb-4">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/40 border border-electric/30 mb-4 glow-electric">
+                  <Sparkles className="w-4 h-4 text-electric" />
+                  <span className="text-sm font-medium text-electric">Launching Q1 2025</span>
+                </div>
+                <p className="text-muted-foreground">
+                  Join our waitlist to be first in line for early access
+                </p>
+              </div>
+              <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-3">
+                <Input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1 h-12 bg-card/50 border-electric/30 focus:border-electric/60"
+                  disabled={isSubmitting}
+                />
+                <Button 
+                  type="submit" 
+                  size="lg"
+                  className="gradient-electric glow-electric group transition-bounce px-8"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Joining..." : "Join Waitlist"}
+                  <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-smooth" />
+                </Button>
+              </form>
+            </div>
+            
+            {/* Demo Button */}
+            <div className="flex justify-center">
+              <Button 
+                variant="outline" 
+                size="lg" 
+                className="text-lg px-8 py-6 border-electric/30 hover:border-electric/60 hover:bg-electric/10 transition-smooth"
+              >
+                Try Demo
+              </Button>
+            </div>
+          </div>
+
+          {/* Remove old CTA buttons section */}
+          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               size="lg" 
               className="gradient-electric glow-electric text-lg px-8 py-6 group transition-bounce"
@@ -53,9 +136,9 @@ const Hero = () => {
               size="lg" 
               className="text-lg px-8 py-6 border-electric/30 hover:border-electric/60 hover:bg-electric/10 transition-smooth"
             >
-              Watch Demo
+              Try Demo
             </Button>
-          </div>
+          </div> */}
 
           {/* Stats */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-16 border-t border-border/30">

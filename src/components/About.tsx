@@ -158,37 +158,22 @@ const About = () => {
         <div className="text-center">
           <Card className="gradient-card border-electric/30 shadow-elegant max-w-2xl mx-auto">
             <CardHeader>
-              <Badge className="mx-auto mb-4 gradient-electric text-primary-foreground w-fit">
-                Launching Q1 2025
-              </Badge>
               <CardTitle className="text-3xl font-heading mb-4">
-                Join the Waitlist
+                Ready to Transform Your Marketing?
               </CardTitle>
               <CardDescription className="text-lg text-muted-foreground">
-                We're putting the finishing touches on Marketa AI. Join our waitlist to be among 
-                the first to experience the future of marketing automation.
+                We're putting the finishing touches on Marketa AI. The waitlist is now open 
+                in our hero section above - join thousands of marketers preparing for the future.
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                <Input
-                  type="email"
-                  placeholder="Enter your email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required
-                  className="flex-1"
-                  disabled={isSubmitting}
-                />
-                <Button 
-                  type="submit" 
-                  className="gradient-electric glow-electric group transition-bounce"
-                  disabled={isSubmitting}
-                >
-                  {isSubmitting ? "Joining..." : "Join Waitlist"}
-                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-smooth" />
-                </Button>
-              </form>
+              <Button 
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                className="gradient-electric glow-electric group transition-bounce"
+              >
+                Join Waitlist Above
+                <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-smooth" />
+              </Button>
               <p className="text-sm text-muted-foreground mt-4">
                 No spam, just updates on our launch progress.
               </p>
