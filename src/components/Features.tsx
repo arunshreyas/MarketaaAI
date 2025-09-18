@@ -12,6 +12,7 @@ import {
   Clock,
   Sparkles
 } from "lucide-react";
+import { FadeInOnScroll, SplitText, AnimatedContent } from "@/components/animations";
 
 const Features = () => {
   const features = [
@@ -75,58 +76,75 @@ const Features = () => {
     <section id="features" className="py-24 relative">
       <div className="container mx-auto px-6">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <Badge className="mb-4 gradient-electric text-primary-foreground">
-            Powerful Features
-          </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold font-heading mb-6">
-            Everything You Need to
-            <span className="gradient-electric bg-clip-text text-transparent block">
-              Dominate Digital Marketing
-            </span>
-          </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            From AI-driven campaign creation to real-time optimization, 
-            Marketa AI provides all the tools you need to succeed in today's competitive landscape.
-          </p>
-        </div>
+        <FadeInOnScroll direction="up">
+          <div className="text-center mb-16">
+            <Badge className="mb-4 gradient-electric text-primary-foreground">
+              Powerful Features
+            </Badge>
+            <SplitText 
+              text="Everything You Need to"
+              tag="h2"
+              className="text-4xl md:text-5xl font-bold font-heading mb-2"
+              splitType="words"
+              staggerDelay={0.1}
+            />
+            <SplitText 
+              text="Dominate Digital Marketing"
+              tag="span"
+              className="gradient-electric bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading mb-6"
+              splitType="words"
+              staggerDelay={0.08}
+              delay={0.5}
+            />
+            <FadeInOnScroll direction="up" delay={1}>
+              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+                From AI-driven campaign creation to real-time optimization, 
+                Marketa AI provides all the tools you need to succeed in today's competitive landscape.
+              </p>
+            </FadeInOnScroll>
+          </div>
+        </FadeInOnScroll>
 
         {/* Features Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {features.map((feature, index) => (
-            <Card 
-              key={index} 
-              className="gradient-card border-border/50 hover:border-electric/30 transition-smooth shadow-card hover:shadow-elegant group"
-            >
-              <CardHeader>
-                <div className="flex items-center justify-between mb-4">
-                  <div className="p-3 rounded-lg bg-electric/10 group-hover:bg-electric/20 transition-smooth">
-                    <feature.icon className="w-6 h-6 text-electric" />
+        <AnimatedContent direction="vertical" stagger={0.1}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card 
+                key={index} 
+                className="gradient-card border-border/50 hover:border-electric/30 transition-smooth shadow-card hover:shadow-elegant group"
+              >
+                <CardHeader>
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="p-3 rounded-lg bg-electric/10 group-hover:bg-electric/20 transition-smooth">
+                      <feature.icon className="w-6 h-6 text-electric" />
+                    </div>
+                    <Badge variant="secondary" className="text-xs">
+                      {feature.badge}
+                    </Badge>
                   </div>
-                  <Badge variant="secondary" className="text-xs">
-                    {feature.badge}
-                  </Badge>
-                </div>
-                <CardTitle className="text-xl font-heading">
-                  {feature.title}
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-muted-foreground leading-relaxed">
-                  {feature.description}
-                </CardDescription>
-              </CardContent>
-            </Card>
-          ))}
-        </div>
+                  <CardTitle className="text-xl font-heading">
+                    {feature.title}
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-muted-foreground leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </AnimatedContent>
 
         {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <div className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-4">
-            <Sparkles className="w-4 h-4 text-electric" />
-            Join thousands of marketers already using Marketa AI
+        <FadeInOnScroll direction="up" delay={0.5}>
+          <div className="text-center mt-16">
+            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-4">
+              <Sparkles className="w-4 h-4 text-electric" />
+              Join thousands of marketers already using Marketa AI
+            </div>
           </div>
-        </div>
+        </FadeInOnScroll>
       </div>
     </section>
   );
