@@ -72,13 +72,11 @@ const Hero = () => {
               staggerDelay={0.1}
               delay={0.4}
             />
-            <SplitText 
-              text="Digital Marketing" 
-              tag="span" 
-              className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-5xl md:text-7xl font-bold font-heading leading-tight"
-              staggerDelay={0.08}
-              delay={0.8}
-            />
+            <FadeInOnScroll direction="up" delay={0.8} duration={1}>
+              <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-5xl md:text-7xl font-bold font-heading leading-tight">
+                Digital Marketing
+              </span>
+            </FadeInOnScroll>
             <SplitText 
               text="with AI" 
               tag="span" 
