@@ -41,15 +41,16 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden">
-      {/* Background Image */}
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg">
+      {/* Dark Veil Background */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src={heroImage} 
-          alt="Marketa AI - Digital Marketing Revolution" 
-          className="w-full h-full object-cover opacity-20"
-        />
-        <div className="absolute inset-0 gradient-hero opacity-90" />
+        {/* Base dark gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
+        {/* Veil overlay effect */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
+        {/* Subtle texture overlay */}
+        <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-electric/5 via-transparent to-electric/5" />
       </div>
 
       {/* Content */}
