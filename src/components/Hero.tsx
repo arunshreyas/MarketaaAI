@@ -6,6 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-marketa.jpg";
 import { SplitText, FadeInOnScroll, AnimatedContent } from "@/components/animations";
+import DarkVeil from "@/components/backgrounds/DarkVeil";
 
 const Hero = () => {
   const [email, setEmail] = useState("");
@@ -42,16 +43,7 @@ const Hero = () => {
 
   return (
     <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg">
-      {/* Dark Veil Background */}
-      <div className="absolute inset-0 z-0">
-        {/* Base dark gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black" />
-        {/* Veil overlay effect */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-black/60" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30" />
-        {/* Subtle texture overlay */}
-        <div className="absolute inset-0 opacity-10 bg-gradient-to-br from-electric/5 via-transparent to-electric/5" />
-      </div>
+      <DarkVeil className="absolute inset-0 z-0" />
 
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
