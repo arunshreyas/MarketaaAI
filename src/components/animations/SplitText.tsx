@@ -36,15 +36,15 @@ export const SplitText = ({
     // Set initial state
     gsap.set(elements, {
       opacity: 0,
-      y: 50,
-      rotationX: 90,
+      y: 30,
+      rotationX: 45,
     });
 
-    // Create intersection observer for scroll trigger
+    // Create intersection observer for scroll trigger with lower threshold
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
+          if (entry.isIntersecting) {
             gsap.to(elements, {
               opacity: 1,
               y: 0,
@@ -58,12 +58,28 @@ export const SplitText = ({
           }
         });
       },
-      { threshold }
+      { threshold: 0.01 }
     );
 
     observer.observe(containerRef.current);
 
-    return () => observer.disconnect();
+    // Fallback timeout to ensure visibility
+    const fallbackTimer = setTimeout(() => {
+      gsap.to(elements, {
+        opacity: 1,
+        y: 0,
+        rotationX: 0,
+        duration: duration * 0.5,
+        ease,
+        stagger: staggerDelay,
+        delay,
+      });
+    }, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, [text, staggerDelay, duration, ease, threshold, delay]);
 
   const splitText = () => {

@@ -55,11 +55,11 @@ export const FadeInOnScroll = ({
 
     gsap.set(element, initialProps);
 
-    // Create intersection observer
+    // Create intersection observer with lower threshold
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting && entry.intersectionRatio >= threshold) {
+          if (entry.isIntersecting) {
             gsap.to(element, {
               opacity: 1,
               x: 0,
@@ -73,12 +73,28 @@ export const FadeInOnScroll = ({
           }
         });
       },
-      { threshold }
+      { threshold: 0.01 }
     );
 
     observer.observe(element);
 
-    return () => observer.disconnect();
+    // Fallback timeout to ensure visibility
+    const fallbackTimer = setTimeout(() => {
+      gsap.to(element, {
+        opacity: 1,
+        x: 0,
+        y: 0,
+        scale: scale,
+        duration: duration * 0.5,
+        ease,
+        delay,
+      });
+    }, 1000);
+
+    return () => {
+      observer.disconnect();
+      clearTimeout(fallbackTimer);
+    };
   }, [direction, distance, duration, ease, threshold, delay, scale]);
 
   return (
