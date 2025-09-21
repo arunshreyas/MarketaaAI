@@ -20,14 +20,14 @@ const Assistant = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(true);
+  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // Load conversation history on component mount
+  // Initialize with empty messages array - no automatic loading of history
   useEffect(() => {
-    loadConversationHistory();
+    // Conversation history is not loaded automatically
   }, [user]);
 
   // Auto-scroll to bottom when new messages are added
@@ -37,50 +37,8 @@ const Assistant = () => {
     }
   }, [messages]);
 
-  const loadConversationHistory = async () => {
-    if (!user) return;
-
-    try {
-      const { data, error } = await supabase
-        .from('Conversations')
-        .select('*')
-        .eq('user_id', user.id)
-        .order('created_at', { ascending: true });
-
-      if (error) throw error;
-
-      const historyMessages: Message[] = [];
-      data?.forEach((conversation) => {
-        if (conversation.Prompt) {
-          historyMessages.push({
-            id: `${conversation.id}-prompt`,
-            content: conversation.Prompt,
-            isUser: true,
-            timestamp: new Date(conversation.created_at),
-          });
-        }
-        if (conversation.Response) {
-          historyMessages.push({
-            id: `${conversation.id}-response`,
-            content: conversation.Response,
-            isUser: false,
-            timestamp: new Date(conversation.created_at),
-          });
-        }
-      });
-
-      setMessages(historyMessages);
-    } catch (error: any) {
-      console.error('Error loading conversation history:', error);
-      toast({
-        title: "Error",
-        description: "Failed to load conversation history.",
-        variant: "destructive",
-      });
-    } finally {
-      setIsLoadingHistory(false);
-    }
-  };
+  // Load conversation history function is removed as per requirement
+  // Conversations will not persist between page refreshes
 
   const generateAIResponse = (userMessage: string): string => {
     // Simple AI response generator - in a real app, this would call an actual AI service

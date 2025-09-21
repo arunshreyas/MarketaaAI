@@ -32,10 +32,10 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="bg-black border-r border-border/20">
-      <SidebarContent>
+    <Sidebar className="bg-background border-r border-border/20 [--sidebar-background:var(--background)] [--sidebar-foreground:var(--foreground)] [--sidebar-border:var(--border)] [--sidebar-accent:var(--surface)] [--sidebar-accent-foreground:var(--foreground)]">
+      <SidebarContent className="[--sidebar-background:var(--background)]">
         {/* Logo */}
-        <div className="p-6 border-b border-border/20 bg-card-bg/50">
+        <div className="p-6 border-b border-border/20 bg-background backdrop-blur-sm">
           <div className="flex items-center space-x-3">
             <div className="gradient-electric p-2 rounded-lg glow-electric">
               <Sparkles className="h-6 w-6 text-primary-foreground" />
@@ -62,7 +62,7 @@ export function AppSidebar() {
                         `flex items-center space-x-3 px-3 py-2 rounded-lg transition-smooth ${
                           isActive
                             ? "bg-electric/20 text-electric border border-electric/30 glow-electric shadow-card"
-                            : "hover:bg-card-bg/80 hover:text-foreground text-muted-foreground/80 hover:shadow-sm"
+                            : "hover:bg-surface hover:text-foreground text-muted-foreground/80 hover:shadow-sm"
                         }`
                       }
                     >
