@@ -9,7 +9,7 @@ const Navigation = () => {
   const { user, signOut } = useAuth();
 
   return (
-    <nav className="fixed top-0 w-full z-50 bg-card/80 backdrop-blur-xl border-b border-border">
+    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-card/60 backdrop-blur-xl border border-border/20 rounded-2xl shadow-lg w-[calc(100%-2rem)] max-w-6xl">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
