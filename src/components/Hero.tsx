@@ -133,44 +133,24 @@ const Hero = () => {
                   Try Demo
                 </Button>
               </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-border/30">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-electric mb-2">500+</div>
+                  <div className="text-muted-foreground">Campaigns Optimized</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-electric mb-2">95%</div>
+                  <div className="text-muted-foreground">Success Rate</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-electric mb-2">24/7</div>
+                  <div className="text-muted-foreground">AI-Powered Insights</div>
+                </div>
+              </div>
             </div>
           </AnimatedContent>
-
-          {/* Remove old CTA buttons section */}
-          {/* <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
-              size="lg" 
-              className="gradient-electric glow-electric text-lg px-8 py-6 group transition-bounce"
-            >
-              Start Free Trial
-              <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-smooth" />
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="text-lg px-8 py-6 border-electric/30 hover:border-electric/60 hover:bg-electric/10 transition-smooth"
-            >
-              Try Demo
-            </Button>
-          </div> */}
-
-          {/* Stats */}
-          <FadeInOnScroll direction="up" delay={2.5}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 pt-12 border-t border-border/30">
-              <div className="text-center">
-                <div className="text-3xl font-bold text-electric mb-2">500+</div>
-                <div className="text-muted-foreground">Campaigns Optimized</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-electric mb-2">95%</div>
-                <div className="text-muted-foreground">Success Rate</div>
-              </div>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-electric mb-2">24/7</div>
-                <div className="text-muted-foreground">AI-Powered Insights</div>
-              </div>
-            </div>
-          </FadeInOnScroll>
         </div>
       </div>
     </section>
