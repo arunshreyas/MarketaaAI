@@ -156,7 +156,7 @@ const Hero = () => {
 
           {/* Stats */}
           <FadeInOnScroll direction="up" delay={2.5}>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16 pt-16 border-t border-border/30">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 pt-12 border-t border-border/30">
               <div className="text-center">
                 <div className="text-3xl font-bold text-electric mb-2">500+</div>
                 <div className="text-muted-foreground">Campaigns Optimized</div>
