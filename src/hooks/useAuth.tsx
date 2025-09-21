@@ -26,9 +26,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(session?.user ?? null);
         setIsLoading(false);
         
-        // Redirect authenticated users away from auth page
-        if (session?.user && window.location.pathname === '/auth') {
-          navigate('/');
+        // Redirect authenticated users to dashboard or away from auth page
+        if (session?.user) {
+          if (window.location.pathname === '/auth') {
+            navigate('/dashboard');
+          }
         }
       }
     );
@@ -45,7 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    navigate('/auth');
+    navigate('/');
   };
 
   const value = {
