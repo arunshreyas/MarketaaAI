@@ -7,42 +7,39 @@ import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-marketa.jpg";
 import { SplitText, FadeInOnScroll, AnimatedContent } from "@/components/animations";
 import DarkVeil from "@/components/backgrounds/DarkVeil";
-
 const Hero = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const { toast } = useToast();
-
+  const {
+    toast
+  } = useToast();
   const handleWaitlistSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
-
     setIsSubmitting(true);
     try {
-      const { error } = await supabase
-        .from('Emails')
-        .insert([{ Email: email }]);
-
+      const {
+        error
+      } = await supabase.from('Emails').insert([{
+        Email: email
+      }]);
       if (error) throw error;
-
       toast({
         title: "Welcome to the waitlist!",
-        description: "We'll notify you as soon as Marketa AI launches.",
+        description: "We'll notify you as soon as Marketa AI launches."
       });
       setEmail("");
     } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Failed to join waitlist. Please try again.",
-        variant: "destructive",
+        variant: "destructive"
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-
-  return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
+  return <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
       <DarkVeil className="absolute inset-0 z-0" />
 
       {/* Content */}
@@ -50,25 +47,13 @@ const Hero = () => {
         <div className="max-w-4xl mx-auto text-center">
           {/* Main Heading */}
           <div className="mb-0">
-            <SplitText 
-              text="Transform Your" 
-              tag="h1" 
-              className="text-5xl md:text-7xl font-bold font-heading leading-tight"
-              staggerDelay={0.1}
-              delay={0.4}
-            />
+            <SplitText text="Transform Your" tag="h1" className="text-5xl md:text-7xl font-bold font-heading leading-tight" staggerDelay={0.1} delay={0.4} />
             <FadeInOnScroll direction="up" delay={0.8} duration={1}>
               <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-5xl md:text-7xl font-bold font-heading leading-tight">
                 Digital Marketing
               </span>
             </FadeInOnScroll>
-            <SplitText 
-              text="with AI" 
-              tag="span" 
-              className="text-5xl md:text-7xl font-bold font-heading leading-tight"
-              staggerDelay={0.1}
-              delay={1.2}
-            />
+            <SplitText text="with AI" tag="span" className="text-5xl md:text-7xl font-bold font-heading leading-tight" staggerDelay={0.1} delay={1.2} />
           </div>
 
           {/* Badge */}
@@ -102,21 +87,8 @@ const Hero = () => {
                   </p>
                 </div>
                 <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-3">
-                  <Input
-                    type="email"
-                    placeholder="Enter your email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                    className="flex-1 h-12 bg-card/50 border-electric/30 focus:border-electric/60"
-                    disabled={isSubmitting}
-                  />
-                  <Button 
-                    type="submit" 
-                    size="lg"
-                    className="gradient-electric glow-electric group transition-bounce px-8"
-                    disabled={isSubmitting}
-                  >
+                  <Input type="email" placeholder="Enter your email" value={email} onChange={e => setEmail(e.target.value)} required className="flex-1 h-12 bg-card/50 border-electric/30 focus:border-electric/60" disabled={isSubmitting} />
+                  <Button type="submit" size="lg" className="gradient-electric glow-electric group transition-bounce px-8" disabled={isSubmitting}>
                     {isSubmitting ? "Joining..." : "Join Waitlist"}
                     <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-smooth" />
                   </Button>
@@ -125,36 +97,17 @@ const Hero = () => {
               
               {/* Demo Button */}
               <div className="flex justify-center">
-                <Button 
-                  variant="outline" 
-                  size="lg" 
-                  className="text-lg px-8 py-6 border-electric/30 hover:border-electric/60 hover:bg-electric/10 transition-smooth"
-                >
+                <Button variant="outline" size="lg" className="text-lg px-8 py-6 border-electric/30 hover:border-electric/60 hover:bg-electric/10 transition-smooth">
                   Try Demo
                 </Button>
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8 pt-8 border-t border-border/30">
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-electric mb-2">500+</div>
-                  <div className="text-muted-foreground">Campaigns Optimized</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-electric mb-2">95%</div>
-                  <div className="text-muted-foreground">Success Rate</div>
-                </div>
-                <div className="text-center">
-                  <div className="text-3xl font-bold text-electric mb-2">24/7</div>
-                  <div className="text-muted-foreground">AI-Powered Insights</div>
-                </div>
-              </div>
+              
             </div>
           </AnimatedContent>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
-
 export default Hero;
