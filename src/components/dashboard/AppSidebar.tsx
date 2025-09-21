@@ -32,10 +32,10 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="bg-card border-r border-border/20">
+    <Sidebar className="bg-deep-bg border-r border-border/20">
       <SidebarContent>
         {/* Logo */}
-        <div className="p-6 border-b border-border/20">
+        <div className="p-6 border-b border-border/20 bg-card-bg/50">
           <div className="flex items-center space-x-3">
             <div className="gradient-electric p-2 rounded-lg glow-electric">
               <Sparkles className="h-6 w-6 text-primary-foreground" />
@@ -47,7 +47,7 @@ export function AppSidebar() {
           </div>
         </div>
 
-        <SidebarGroup>
+        <SidebarGroup className="px-3 py-4">
           <SidebarGroupLabel className="text-muted-foreground text-xs uppercase tracking-wider px-3 py-2">
             Main Menu
           </SidebarGroupLabel>
@@ -61,8 +61,8 @@ export function AppSidebar() {
                       className={({ isActive }) =>
                         `flex items-center space-x-3 px-3 py-2 rounded-lg transition-smooth ${
                           isActive
-                            ? "bg-electric/10 text-electric border border-electric/20 glow-electric"
-                            : "hover:bg-surface hover:text-foreground text-muted-foreground"
+                            ? "bg-electric/20 text-electric border border-electric/30 glow-electric shadow-card"
+                            : "hover:bg-card-bg/80 hover:text-foreground text-muted-foreground/80 hover:shadow-sm"
                         }`
                       }
                     >
