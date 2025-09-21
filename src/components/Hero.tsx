@@ -57,7 +57,7 @@ const Hero = () => {
           </FadeInOnScroll>
 
           {/* Main Heading */}
-          <div className="mb-6">
+          <div className="mb-0">
             <SplitText 
               text="Transform Your" 
               tag="h1" 
@@ -81,7 +81,7 @@ const Hero = () => {
 
           {/* Subheading */}
           <FadeInOnScroll direction="up" delay={1.6} duration={1}>
-            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-8 max-w-3xl mx-auto leading-relaxed mt-6">
               Marketa AI learns your business, crafts campaigns that resonate, and delivers results 
               without the complexity. Your brand's creative spark, strategist, and growth engine—all in one.
             </p>
