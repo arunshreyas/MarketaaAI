@@ -32,7 +32,7 @@ const items = [
 
 export function AppSidebar() {
   return (
-    <Sidebar className="bg-deep-bg border-r border-border/20">
+    <Sidebar className="bg-black border-r border-border/20">
       <SidebarContent>
         {/* Logo */}
         <div className="p-6 border-b border-border/20 bg-card-bg/50">
