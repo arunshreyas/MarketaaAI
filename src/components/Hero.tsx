@@ -48,14 +48,6 @@ const Hero = () => {
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-4xl mx-auto text-center">
-          {/* Badge */}
-          <FadeInOnScroll direction="down" delay={0.2}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/40 border border-electric/30 mb-8 glow-electric">
-              <Sparkles className="w-4 h-4 text-electric" />
-              <span className="text-sm font-medium text-electric">Your AI Marketing Partner</span>
-            </div>
-          </FadeInOnScroll>
-
           {/* Main Heading */}
           <div className="mb-0">
             <SplitText 
@@ -78,6 +70,14 @@ const Hero = () => {
               delay={1.2}
             />
           </div>
+
+          {/* Badge */}
+          <FadeInOnScroll direction="down" delay={1.4}>
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/40 border border-electric/30 mb-6 mt-6 glow-electric">
+              <Sparkles className="w-4 h-4 text-electric" />
+              <span className="text-sm font-medium text-electric">Your AI Marketing Partner</span>
+            </div>
+          </FadeInOnScroll>
 
           {/* Subheading */}
           <FadeInOnScroll direction="up" delay={1.6} duration={1}>
