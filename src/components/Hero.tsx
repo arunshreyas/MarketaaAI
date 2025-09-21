@@ -42,7 +42,7 @@ const Hero = () => {
   };
 
   return (
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg">
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
       <DarkVeil className="absolute inset-0 z-0" />
 
       {/* Content */}
