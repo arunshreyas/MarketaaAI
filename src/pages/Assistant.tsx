@@ -108,7 +108,7 @@ const Assistant = () => {
           .from("Conversations")
           .select("id, Response")
           .eq("user_id", user_id)
-          .eq("conversation_id", conversation_id)
+          .eq("id", conversation_id)
           .order("created_at", { ascending: false })
           .limit(1)
           .maybeSingle();
