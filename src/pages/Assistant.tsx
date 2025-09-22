@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Send, Bot, User, Sparkles, MessageSquare } from "lucide-react";
@@ -21,50 +21,48 @@ const Assistant = () => {
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingHistory, setIsLoadingHistory] = useState(false);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const scrollAreaRef = useRef<HTMLDivElement | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // Initialize with empty messages array - no automatic loading of history
+  // conversation id stored per browser session so multiple users/threads don't collide
+  const conversationIdRef = useRef<string | null>(null);
   useEffect(() => {
-    // Conversation history is not loaded automatically
-  }, [user]);
+    if (typeof window !== "undefined" && !conversationIdRef.current) {
+      let stored = localStorage.getItem("conversation_id");
+      if (!stored) {
+        // create new UUID (crypto.randomUUID available in modern browsers)
+        try {
+          stored = (crypto as any).randomUUID ? (crypto as any).randomUUID() : `conv-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+        } catch {
+          stored = `conv-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
+        }
+        localStorage.setItem("conversation_id", stored);
+      }
+      conversationIdRef.current = stored;
+    }
+  }, []);
 
-  // Auto-scroll to bottom when new messages are added
+  // Auto-scroll to bottom when messages update
   useEffect(() => {
     if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+      // Slight delay to ensure DOM update
+      setTimeout(() => {
+        if (scrollAreaRef.current) {
+          scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+        }
+      }, 50);
     }
   }, [messages]);
 
-  // Load conversation history function is removed as per requirement
-  // Conversations will not persist between page refreshes
+  // No automatic loading of history per your request
+  useEffect(() => {
+    // intentionally empty
+  }, [user]);
 
-  const generateAIResponse = (userMessage: string): string => {
-    // Simple AI response generator - in a real app, this would call an actual AI service
-    const responses = [
-      "That's an interesting question! Let me help you with that. Based on your marketing needs, I'd recommend focusing on understanding your target audience first.",
-      "Great point! For marketing campaigns, it's essential to have clear objectives and measurable KPIs. What specific goals are you trying to achieve?",
-      "I understand your concern. In digital marketing, data-driven decisions are crucial. Have you considered A/B testing your current approach?",
-      "Excellent question! Customer segmentation is key to effective marketing. Let me suggest some strategies that could work for your business.",
-      "That's a smart approach! Content marketing and SEO go hand in hand. Here are some best practices you might find helpful.",
-      "I see what you're getting at. Social media marketing requires consistent engagement. What platforms are you currently using?",
-      "Good thinking! Email marketing still has one of the highest ROIs. Have you considered implementing automated email sequences?",
-      "Interesting perspective! Influencer marketing can be very effective when done right. What's your target demographic?",
-    ];
-
-    // Simple keyword-based response selection
-    const lowerMessage = userMessage.toLowerCase();
-    if (lowerMessage.includes('marketing') || lowerMessage.includes('campaign')) {
-      return responses[Math.floor(Math.random() * 4)];
-    } else if (lowerMessage.includes('social') || lowerMessage.includes('content')) {
-      return responses[4 + Math.floor(Math.random() * 2)];
-    } else if (lowerMessage.includes('email') || lowerMessage.includes('automation')) {
-      return responses[6];
-    } else if (lowerMessage.includes('influencer') || lowerMessage.includes('demographic')) {
-      return responses[7];
-    } else {
-      return responses[Math.floor(Math.random() * responses.length)];
+  const scrollToBottom = () => {
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
   };
 
@@ -75,7 +73,7 @@ const Assistant = () => {
     setInputMessage("");
     setIsLoading(true);
 
-    // Add user message to UI immediately
+    // Push user message to UI immediately
     const userMessageObj: Message = {
       id: `user-${Date.now()}`,
       content: userMessage,
@@ -83,45 +81,91 @@ const Assistant = () => {
       timestamp: new Date(),
     };
     setMessages(prev => [...prev, userMessageObj]);
+    scrollToBottom();
 
     try {
-      // Generate AI response
-      const aiResponse = generateAIResponse(userMessage);
+      const user_id = user.id;
+      const conversation_id = conversationIdRef.current;
 
-      // Save conversation to database
-      const { error } = await supabase
-        .from('Conversations')
-        .insert({
-          user_id: user.id,
-          Prompt: userMessage,
-          Response: aiResponse,
-        });
+      if (!conversation_id) {
+        throw new Error("conversation_id not initialized");
+      }
 
-      if (error) throw error;
+      // Insert the prompt into Conversations table
+      const { error: insertError } = await supabase
+        .from("Conversations")
+        .insert([{ Prompt: userMessage, user_id, conversation_id }]);
 
-      // Add AI response to UI
-      const aiMessageObj: Message = {
-        id: `ai-${Date.now()}`,
-        content: aiResponse,
-        isUser: false,
-        timestamp: new Date(),
-      };
-      setMessages(prev => [...prev, aiMessageObj]);
+      if (insertError) throw insertError;
 
+      // Poll for response (n8n will write Response into the same table)
+      const maxTries = 30; // 30 * 2s = up to ~60s wait
+      const delay = 2000;
+      let tries = 0;
+
+      while (tries < maxTries) {
+        const { data: promptRow, error: fetchError } = await supabase
+          .from("Conversations")
+          .select("id, Response")
+          .eq("user_id", user_id)
+          .eq("conversation_id", conversation_id)
+          .order("created_at", { ascending: false })
+          .limit(1)
+          .maybeSingle();
+
+        if (fetchError) throw fetchError;
+
+        if (promptRow?.Response) {
+          const aiMessageObj: Message = {
+            id: `ai-${Date.now()}`,
+            content: promptRow.Response,
+            isUser: false,
+            timestamp: new Date(),
+          };
+          setMessages(prev => [...prev, aiMessageObj]);
+          setIsLoading(false);
+          scrollToBottom();
+          return;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, delay));
+        tries++;
+      }
+
+      // Timeout fallback
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `ai-timeout-${Date.now()}`,
+          content: "⏳ AI is still thinking... Try again later.",
+          isUser: false,
+          timestamp: new Date(),
+        },
+      ]);
     } catch (error: any) {
-      console.error('Error sending message:', error);
+      console.error("Error sending message:", error);
       toast({
         title: "Error",
         description: "Failed to send message. Please try again.",
         variant: "destructive",
       });
+      setMessages(prev => [
+        ...prev,
+        {
+          id: `ai-error-${Date.now()}`,
+          content: `❌ Error sending message: ${error?.message ?? error}`,
+          isUser: false,
+          timestamp: new Date(),
+        },
+      ]);
     } finally {
       setIsLoading(false);
+      scrollToBottom();
     }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
     }
@@ -164,7 +208,7 @@ const Assistant = () => {
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-foreground">Start a conversation</h3>
                 <p className="text-muted-foreground max-w-md">
-                  Ask me anything about marketing strategies, campaign optimization, 
+                  Ask me anything about marketing strategies, campaign optimization,
                   audience targeting, or any other marketing-related questions.
                 </p>
               </div>
@@ -209,10 +253,10 @@ const Assistant = () => {
                 <div
                   key={message.id}
                   className={`flex items-start space-x-3 ${
-                    message.isUser ? 'flex-row-reverse space-x-reverse' : ''
+                    message.isUser ? "flex-row-reverse space-x-reverse" : ""
                   }`}
                 >
-                  <Avatar className={`w-8 h-8 ${message.isUser ? 'bg-electric/10' : 'bg-surface'}`}>
+                  <Avatar className={`w-8 h-8 ${message.isUser ? "bg-electric/10" : "bg-surface"}`}>
                     <AvatarFallback>
                       {message.isUser ? (
                         <User className="h-4 w-4 text-electric" />
@@ -223,18 +267,14 @@ const Assistant = () => {
                   </Avatar>
                   <Card
                     className={`max-w-[80%] ${
-                      message.isUser
-                        ? 'gradient-electric text-primary-foreground'
-                        : 'gradient-card border-border/20'
+                      message.isUser ? "gradient-electric text-primary-foreground" : "gradient-card border-border/20"
                     }`}
                   >
                     <CardContent className="p-3">
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">
                         {message.content}
                       </p>
-                      <p className={`text-xs mt-2 ${
-                        message.isUser ? 'text-primary-foreground/70' : 'text-muted-foreground'
-                      }`}>
+                      <p className={`text-xs mt-2 ${message.isUser ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                         {message.timestamp.toLocaleTimeString()}
                       </p>
                     </CardContent>
@@ -253,8 +293,8 @@ const Assistant = () => {
                       <div className="flex items-center space-x-2">
                         <div className="flex space-x-1">
                           <div className="w-2 h-2 bg-electric rounded-full animate-bounce" />
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: '0.1s' }} />
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: '0.2s' }} />
+                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
+                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
                         </div>
                         <span className="text-sm text-muted-foreground">AI is thinking...</span>
                       </div>
