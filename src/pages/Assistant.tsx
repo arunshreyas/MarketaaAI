@@ -25,22 +25,10 @@ const Assistant = () => {
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // conversation id stored per browser session so multiple users/threads don't collide
-  const conversationIdRef = useRef<string | null>(null);
+  // track the last inserted conversation row id for polling
+  const lastInsertedIdRef = useRef<number | null>(null);
   useEffect(() => {
-    if (typeof window !== "undefined" && !conversationIdRef.current) {
-      let stored = localStorage.getItem("conversation_id");
-      if (!stored) {
-        // create new UUID (crypto.randomUUID available in modern browsers)
-        try {
-          stored = (crypto as any).randomUUID ? (crypto as any).randomUUID() : `conv-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
-        } catch {
-          stored = `conv-${Date.now()}-${Math.floor(Math.random() * 100000)}`;
-        }
-        localStorage.setItem("conversation_id", stored);
-      }
-      conversationIdRef.current = stored;
-    }
+    // no-op: maintained for symmetry with previous effect
   }, []);
 
   // Auto-scroll to bottom when messages update
@@ -85,18 +73,19 @@ const Assistant = () => {
 
     try {
       const user_id = user.id;
-      const conversation_id = conversationIdRef.current;
 
-      if (!conversation_id) {
-        throw new Error("conversation_id not initialized");
-      }
-
-      // Insert the prompt into Conversations table
-      const { error: insertError } = await supabase
+      // Insert the prompt into Conversations table and get new row id
+      const { data: insertData, error: insertError } = await supabase
         .from("Conversations")
-        .insert([{ Prompt: userMessage, user_id, conversation_id }]);
+        .insert([{ Prompt: userMessage, user_id }])
+        .select("id")
+        .single();
 
       if (insertError) throw insertError;
+
+      const insertedId = insertData?.id;
+      if (!insertedId) throw new Error("Failed to retrieve inserted conversation id");
+      lastInsertedIdRef.current = insertedId;
 
       // Poll for response (n8n will write Response into the same table)
       const maxTries = 30; // 30 * 2s = up to ~60s wait
@@ -107,10 +96,7 @@ const Assistant = () => {
         const { data: promptRow, error: fetchError } = await supabase
           .from("Conversations")
           .select("id, Response")
-          .eq("user_id", user_id)
-          .eq("id", conversation_id)
-          .order("created_at", { ascending: false })
-          .limit(1)
+          .eq("id", insertedId)
           .maybeSingle();
 
         if (fetchError) throw fetchError;
