@@ -73,7 +73,7 @@ const Features = () => {
   ];
 
   return (
-    <section id="features" className="py-24 relative">
+    <section id="features" className="py-12 relative">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <FadeInOnScroll direction="up">

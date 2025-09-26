@@ -69,7 +69,7 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-24 relative">
+    <section id="pricing" className="py-12 relative">
       <div className="container mx-auto px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
