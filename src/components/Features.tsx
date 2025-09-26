@@ -88,14 +88,9 @@ const Features = () => {
               splitType="words"
               staggerDelay={0.1}
             />
-            <SplitText 
-              text="Dominate Digital Marketing"
-              tag="span"
-              className="gradient-electric bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading mb-6"
-              splitType="words"
-              staggerDelay={0.08}
-              delay={0.5}
-            />
+               <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading leading-tight">
+                Digital Marketing
+              </span>
             <FadeInOnScroll direction="up" delay={1}>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
                 From AI-driven campaign creation to real-time optimization, 

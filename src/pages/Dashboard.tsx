@@ -4,6 +4,7 @@ import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
+import Campaigns from "./Campaigns";
 import Assistant from "./Assistant";
 
 const Dashboard = () => {
@@ -17,6 +18,7 @@ const Dashboard = () => {
             <Routes>
               <Route path="/" element={<DashboardContent />} />
               <Route path="/assistant" element={<Assistant />} />
+              <Route path="/campaigns" element={<Campaigns />} />
             </Routes>
           </main>
         </div>

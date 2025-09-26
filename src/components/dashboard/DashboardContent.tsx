@@ -1,7 +1,11 @@
+import { useEffect, useState } from "react";
 import { Rocket, Video, Brain, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/hooks/useAuth";
+import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
+import NewCampaignDialog from "@/components/campaigns/NewCampaignDialog";
 
 const quickActions = [
   {
@@ -24,26 +28,46 @@ const quickActions = [
   },
 ];
 
-const mockCampaigns = [
-  {
-    id: 1,
-    name: "Summer Product Launch",
-    goal: "Brand Awareness",
-    status: "Active",
-    performance: { impressions: "45.2K", clicks: "1.8K", ctr: "4.2%" },
-  },
-  {
-    id: 2,
-    name: "Holiday Retargeting",
-    goal: "Conversions",
-    status: "Paused",
-    performance: { impressions: "32.1K", clicks: "2.1K", ctr: "6.5%" },
-  },
-];
+type Campaign = {
+  id: number;
+  name: string;
+  status: string;
+  objective: string;
+  created_at: string;
+  channels: any;
+};
 
 export function DashboardContent() {
   const { user } = useAuth();
-  const hasNoCampaigns = mockCampaigns.length === 0;
+  const { toast } = useToast();
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const loadCampaigns = async () => {
+    if (!user) return;
+    setIsLoading(true);
+    const { data, error } = await supabase
+      .from("Campaigns")
+      .select("id, name, status, objective, created_at, channels")
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
+    if (error) {
+      toast({ title: "Failed to load campaigns", description: error.message, variant: "destructive" });
+    } else {
+      setCampaigns(data || []);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    loadCampaigns();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user?.id]);
+
+  const handleCreated = async () => {
+    await loadCampaigns();
+  };
 
   return (
     <div className="space-y-8">
@@ -81,13 +105,13 @@ export function DashboardContent() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <h2 className="text-2xl font-bold text-foreground">Recent Campaigns</h2>
-          <Button className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
+          <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
             <Plus className="h-4 w-4 mr-2" />
             New Campaign
           </Button>
         </div>
 
-        {hasNoCampaigns ? (
+        {(!campaigns || campaigns.length === 0) ? (
           // Empty State
           <Card className="gradient-card border-border/20 shadow-card">
             <CardContent className="flex flex-col items-center justify-center py-16 text-center">
@@ -100,7 +124,7 @@ export function DashboardContent() {
               <p className="text-muted-foreground mb-6 max-w-md">
                 Create your first marketing campaign and watch your business grow with AI-powered insights.
               </p>
-              <Button className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
+              <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
                 <Plus className="h-4 w-4 mr-2" />
                 Create Campaign
               </Button>
@@ -109,7 +133,7 @@ export function DashboardContent() {
         ) : (
           // Campaign Cards
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {mockCampaigns.map((campaign) => (
+            {campaigns.map((campaign) => (
               <Card 
                 key={campaign.id}
                 className="gradient-card border-border/20 hover:border-electric/20 transition-smooth cursor-pointer shadow-card hover:shadow-elegant"
@@ -118,28 +142,28 @@ export function DashboardContent() {
                   <div className="flex items-center justify-between">
                     <CardTitle className="text-foreground">{campaign.name}</CardTitle>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
-                      campaign.status === 'Active' 
+                      campaign.status?.toLowerCase() === 'active' 
                         ? 'bg-green-500/10 text-green-400' 
                         : 'bg-yellow-500/10 text-yellow-400'
                     }`}>
                       {campaign.status}
                     </span>
                   </div>
-                  <CardDescription>Goal: {campaign.goal}</CardDescription>
+                  <CardDescription>Objective: {campaign.objective}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-4">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-electric">{campaign.performance.impressions}</div>
-                      <div className="text-xs text-muted-foreground">Impressions</div>
+                      <div className="text-2xl font-bold text-electric">{new Date(campaign.created_at).toLocaleDateString()}</div>
+                      <div className="text-xs text-muted-foreground">Created</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-electric">{campaign.performance.clicks}</div>
-                      <div className="text-xs text-muted-foreground">Clicks</div>
+                      <div className="text-2xl font-bold text-electric">{Array.isArray(campaign.channels) ? campaign.channels.length : 0}</div>
+                      <div className="text-xs text-muted-foreground">Channels</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-electric">{campaign.performance.ctr}</div>
-                      <div className="text-xs text-muted-foreground">CTR</div>
+                      <div className="text-2xl font-bold text-electric">{campaign.status}</div>
+                      <div className="text-xs text-muted-foreground">Status</div>
                     </div>
                   </div>
                 </CardContent>
@@ -148,6 +172,7 @@ export function DashboardContent() {
           </div>
         )}
       </div>
+      <NewCampaignDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} onCreated={handleCreated} />
     </div>
   );
 }

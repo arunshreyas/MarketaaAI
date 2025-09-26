@@ -78,7 +78,7 @@ const Pricing = () => {
           </Badge>
           <h2 className="text-4xl md:text-5xl font-bold font-heading mb-6">
             Choose Your
-            <span className="gradient-electric bg-clip-text text-transparent block">
+            <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading leading-tight">
               Marketing Future
             </span>
           </h2>
