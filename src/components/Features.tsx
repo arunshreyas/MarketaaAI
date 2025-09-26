@@ -1,17 +1,6 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { 
-  Brain, 
-  Target, 
-  BarChart3, 
-  Zap, 
-  Users, 
-  MessageSquare,
-  TrendingUp,
-  Shield,
-  Clock,
-  Sparkles
-} from "lucide-react";
+import { Brain, Target, ChartBar as BarChart3, Zap, Users, MessageSquare, TrendingUp, Shield, Clock, Sparkles } from "lucide-react";
 import { FadeInOnScroll, SplitText, AnimatedContent } from "@/components/animations";
 
 const Features = () => {
