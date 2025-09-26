@@ -9,7 +9,7 @@ const Navigation = () => {
   const { user, signOut } = useAuth();
 
   return (
-    <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-2xl shadow-floating w-[calc(100%-2rem)] max-w-6xl hover-lift">
+    <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-2xl shadow-floating w-[calc(100%-2rem)] max-w-6xl">
       <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}

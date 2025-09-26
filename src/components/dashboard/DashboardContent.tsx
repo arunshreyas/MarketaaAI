@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Rocket, Video, Brain, Plus } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -43,6 +44,7 @@ export function DashboardContent() {
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const navigate = useNavigate();
 
   const loadCampaigns = async () => {
     if (!user) return;
@@ -81,6 +83,13 @@ export function DashboardContent() {
           <Card 
             key={action.title}
             className="card-modern hover-lift cursor-pointer group relative overflow-hidden"
+            onClick={() => {
+              if (action.title === "New Campaign") {
+                setIsDialogOpen(true);
+              } else if (action.title === "Ask Assistant") {
+                navigate("/dashboard/assistant");
+              }
+            }}
           >
             <div className="absolute inset-0 gradient-mesh opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <CardHeader className="pb-3">
