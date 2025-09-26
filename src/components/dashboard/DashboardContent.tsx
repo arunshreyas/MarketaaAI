@@ -86,16 +86,17 @@ export function DashboardContent() {
         {quickActions.map((action) => (
           <Card 
             key={action.title}
-            className="gradient-card border-border/20 hover:border-electric/20 transition-smooth cursor-pointer group shadow-card hover:shadow-elegant"
+            className="card-modern hover-lift cursor-pointer group relative overflow-hidden"
           >
+            <div className="absolute inset-0 gradient-mesh opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             <CardHeader className="pb-3">
-              <div className={`inline-flex p-3 rounded-xl ${action.color} transition-smooth group-hover:scale-110`}>
-                <action.icon className="h-6 w-6" />
+              <div className={`inline-flex p-4 rounded-xl ${action.color} transition-spring group-hover:scale-110 glow-electric-subtle relative z-10`}>
+                <action.icon className="h-7 w-7" />
               </div>
             </CardHeader>
             <CardContent>
-              <h3 className="font-semibold text-foreground mb-1">{action.title}</h3>
-              <p className="text-sm text-muted-foreground">{action.description}</p>
+              <h3 className="font-semibold text-foreground mb-2 relative z-10 group-hover:text-electric transition-spring text-lg">{action.title}</h3>
+              <p className="text-muted-foreground/80 relative z-10">{action.description}</p>
             </CardContent>
           </Card>
         ))}
@@ -113,18 +114,18 @@ export function DashboardContent() {
 
         {(!campaigns || campaigns.length === 0) ? (
           // Empty State
-          <Card className="gradient-card border-border/20 shadow-card">
+          <Card className="card-modern">
             <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="gradient-electric p-4 rounded-full glow-electric mb-6">
+              <div className="gradient-electric p-6 rounded-full glow-electric mb-8 pulse-glow">
                 <Rocket className="h-12 w-12 text-primary-foreground" />
               </div>
-              <h3 className="text-xl font-semibold text-foreground mb-2">
+              <h3 className="text-2xl font-semibold text-foreground mb-4">
                 No campaigns yet — start your first one in 60 seconds
               </h3>
-              <p className="text-muted-foreground mb-6 max-w-md">
+              <p className="text-muted-foreground/80 mb-8 max-w-md text-lg leading-relaxed">
                 Create your first marketing campaign and watch your business grow with AI-powered insights.
               </p>
-              <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
+              <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="btn-modern gradient-electric text-primary-foreground glow-electric hover-lift">
                 <Plus className="h-4 w-4 mr-2" />
                 Create Campaign
               </Button>
@@ -136,11 +137,11 @@ export function DashboardContent() {
             {campaigns.map((campaign) => (
               <Card 
                 key={campaign.id}
-                className="gradient-card border-border/20 hover:border-electric/20 transition-smooth cursor-pointer shadow-card hover:shadow-elegant"
+                className="card-modern hover-lift cursor-pointer group"
               >
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <CardTitle className="text-foreground">{campaign.name}</CardTitle>
+                    <CardTitle className="text-foreground group-hover:text-electric transition-spring">{campaign.name}</CardTitle>
                     <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                       campaign.status?.toLowerCase() === 'active' 
                         ? 'bg-green-500/10 text-green-400' 
@@ -149,7 +150,7 @@ export function DashboardContent() {
                       {campaign.status}
                     </span>
                   </div>
-                  <CardDescription>Objective: {campaign.objective}</CardDescription>
+                  <CardDescription className="text-base">Objective: {campaign.objective}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="grid grid-cols-3 gap-4">

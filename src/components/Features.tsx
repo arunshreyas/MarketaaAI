@@ -78,21 +78,21 @@ const Features = () => {
         {/* Section Header */}
         <FadeInOnScroll direction="up">
           <div className="text-center mb-16">
-            <Badge className="mb-4 gradient-electric text-primary-foreground">
+            <Badge className="mb-6 gradient-electric text-primary-foreground px-4 py-2 text-sm font-semibold rounded-full">
               Powerful Features
             </Badge>
             <SplitText 
               text="Everything You Need to"
               tag="h2"
-              className="text-4xl md:text-5xl font-bold font-heading mb-2"
+              className="text-5xl md:text-6xl font-bold font-heading mb-4 tracking-tight"
               splitType="words"
               staggerDelay={0.1}
             />
-               <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading leading-tight">
+               <span className="text-gradient block text-5xl md:text-6xl font-bold font-heading leading-tight tracking-tight mb-6">
                 Digital Marketing
               </span>
             <FadeInOnScroll direction="up" delay={1}>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+              <p className="text-xl text-muted-foreground/80 max-w-4xl mx-auto leading-relaxed font-light">
                 From AI-driven campaign creation to real-time optimization, 
                 Marketa AI provides all the tools you need to succeed in today's competitive landscape.
               </p>
@@ -106,23 +106,24 @@ const Features = () => {
             {features.map((feature, index) => (
               <Card 
                 key={index} 
-                className="gradient-card border-border/50 hover:border-electric/30 transition-smooth shadow-card hover:shadow-elegant group"
+                className="card-modern hover-lift group relative overflow-hidden"
               >
+                <div className="absolute inset-0 gradient-mesh opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <CardHeader>
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-lg bg-electric/10 group-hover:bg-electric/20 transition-smooth">
-                      <feature.icon className="w-6 h-6 text-electric" />
+                  <div className="flex items-center justify-between mb-6 relative z-10">
+                    <div className="p-4 rounded-xl bg-electric/10 group-hover:bg-electric/20 transition-spring group-hover:scale-110 glow-electric-subtle">
+                      <feature.icon className="w-7 h-7 text-electric" />
                     </div>
-                    <Badge variant="secondary" className="text-xs">
+                    <Badge variant="secondary" className="text-xs font-medium px-3 py-1 rounded-full bg-surface/50">
                       {feature.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl font-heading">
+                  <CardTitle className="text-xl font-heading font-semibold relative z-10 group-hover:text-electric transition-spring">
                     {feature.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-muted-foreground leading-relaxed">
+                  <CardDescription className="text-muted-foreground/80 leading-relaxed relative z-10 text-base">
                     {feature.description}
                   </CardDescription>
                 </CardContent>
@@ -133,10 +134,10 @@ const Features = () => {
 
         {/* Bottom CTA */}
         <FadeInOnScroll direction="up" delay={0.5}>
-          <div className="text-center mt-16">
-            <div className="inline-flex items-center gap-2 text-sm text-muted-foreground mb-4">
+          <div className="text-center mt-20">
+            <div className="inline-flex items-center gap-3 text-sm text-muted-foreground/70 mb-6 px-4 py-2 rounded-full glass-card">
               <Sparkles className="w-4 h-4 text-electric" />
-              Join thousands of marketers already using Marketa AI
+              <span className="font-medium">Join thousands of marketers already using Marketa AI</span>
             </div>
           </div>
         </FadeInOnScroll>
