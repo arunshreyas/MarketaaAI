@@ -26,16 +26,10 @@ const Campaigns = () => {
   const loadCampaigns = async () => {
     if (!user) return;
     setIsLoading(true);
-    const { data, error } = await supabase
-      .from("Campaigns")
-      .select("id, name, status, objective, created_at, channels")
-      .eq("user_id", user.id)
-      .order("created_at", { ascending: false });
-    if (error) {
-      toast({ title: "Failed to load campaigns", description: error.message, variant: "destructive" });
-    } else {
-      setCampaigns(data || []);
-    }
+    
+    // TODO: Implement campaigns table when database is set up
+    setCampaigns([]);
+    
     setIsLoading(false);
   };
 

@@ -58,30 +58,12 @@ const NewCampaignDialog = ({ open, onOpenChange, onCreated }: Props) => {
       return;
     }
     setIsSubmitting(true);
-    const { data, error } = await supabase
-      .from("Campaigns")
-      .insert([
-        {
-          user_id: user.id,
-          name: name.trim(),
-          status,
-          objective,
-          budget_total: budgetTotal ? Number(budgetTotal) : null,
-          channels,
-          strategy_prompt: notes || null,
-        },
-      ])
-      .select("id")
-      .single();
-
-    if (error) {
-      toast({ title: "Could not create campaign", description: error.message, variant: "destructive" });
-    } else {
-      toast({ title: "Campaign created" });
-      onCreated?.(data!.id);
-      reset();
-      onOpenChange(false);
-    }
+    
+    // TODO: Implement campaigns table when database is set up
+    toast({ title: "Campaign feature coming soon!", description: "Database setup required for campaigns." });
+    reset();
+    onOpenChange(false);
+    
     setIsSubmitting(false);
   };
 

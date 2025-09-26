@@ -349,7 +349,7 @@
   }
 
   .card-modern {
-    @apply relative overflow-hidden rounded-2xl border border-border/50 bg-gradient-card backdrop-blur-sm;
+    @apply relative overflow-hidden rounded-2xl border border-border/50 gradient-card backdrop-blur-sm;
     @apply shadow-card transition-all duration-300;
     @apply hover:shadow-elegant hover:border-electric/30;
   }
