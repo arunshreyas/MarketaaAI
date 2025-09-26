@@ -97,22 +97,23 @@ const Features = () => {
                 key={index} 
                 className="card-modern hover-lift group relative overflow-hidden"
               >
-                <div className="absolute inset-0 gradient-mesh opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <div className="absolute inset-0 gradient-mesh opacity-0 group-hover:opacity-30 transition-all duration-700" />
+                <div className="absolute inset-0 bg-gradient-to-br from-electric/5 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
                 <CardHeader>
                   <div className="flex items-center justify-between mb-6 relative z-10">
-                    <div className="p-4 rounded-xl bg-electric/10 group-hover:bg-electric/20 transition-spring group-hover:scale-110 glow-electric-subtle">
-                      <feature.icon className="w-7 h-7 text-electric" />
+                    <div className="p-4 rounded-2xl bg-electric/10 group-hover:bg-electric/20 transition-all duration-300 group-hover:scale-110 group-hover:rotate-2 glow-electric-subtle">
+                      <feature.icon className="w-7 h-7 text-electric group-hover:scale-110 transition-transform duration-300" />
                     </div>
-                    <Badge variant="secondary" className="text-xs font-medium px-3 py-1 rounded-full bg-surface/50">
+                    <Badge variant="secondary" className="text-xs font-bold px-4 py-2 rounded-full bg-surface/80 backdrop-blur-sm border border-electric/20 group-hover:border-electric/40 transition-all">
                       {feature.badge}
                     </Badge>
                   </div>
-                  <CardTitle className="text-xl font-heading font-semibold relative z-10 group-hover:text-electric transition-spring">
+                  <CardTitle className="text-xl font-heading font-bold relative z-10 group-hover:text-electric transition-all duration-300">
                     {feature.title}
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
-                  <CardDescription className="text-muted-foreground/80 leading-relaxed relative z-10 text-base">
+                  <CardDescription className="text-muted-foreground/80 leading-relaxed relative z-10 text-base group-hover:text-muted-foreground transition-colors">
                     {feature.description}
                   </CardDescription>
                 </CardContent>

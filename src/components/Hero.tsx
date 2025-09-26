@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
+import { useToast } from "@/hooks/use-toast";
 import heroImage from "@/assets/hero-marketa.jpg";
 import { SplitText, FadeInOnScroll, AnimatedContent } from "@/components/animations";
 import DarkVeil from "@/components/backgrounds/DarkVeil";
@@ -38,17 +39,22 @@ const Hero = () => {
       setIsSubmitting(false);
     }
   };
-  return <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
+  return (
+    <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
       <DarkVeil className="absolute inset-0 z-0" />
       
-      {/* Floating Elements */}
+      {/* Enhanced Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-1/4 left-1/4 w-2 h-2 bg-electric/30 rounded-full float" style={{ animationDelay: '0s' }} />
-        <div className="absolute top-1/3 right-1/3 w-1 h-1 bg-electric-glow/40 rounded-full float" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 bg-electric/20 rounded-full float" style={{ animationDelay: '4s' }} />
-        <div className="absolute top-2/3 right-1/4 w-1 h-1 bg-electric-glow/30 rounded-full float" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/4 left-1/4 w-3 h-3 bg-electric/40 rounded-full float blur-sm" style={{ animationDelay: '0s' }} />
+        <div className="absolute top-1/3 right-1/3 w-2 h-2 bg-electric-glow/50 rounded-full float pulse-glow" style={{ animationDelay: '2s' }} />
+        <div className="absolute bottom-1/4 left-1/3 w-2.5 h-2.5 bg-electric/30 rounded-full float" style={{ animationDelay: '4s' }} />
+        <div className="absolute top-2/3 right-1/4 w-1.5 h-1.5 bg-electric-glow/40 rounded-full float" style={{ animationDelay: '1s' }} />
+        <div className="absolute top-1/2 left-1/5 w-1 h-8 bg-gradient-to-b from-electric/20 to-transparent rounded-full" style={{ transform: 'rotate(25deg)' }} />
+        <div className="absolute bottom-1/3 right-1/5 w-1 h-12 bg-gradient-to-t from-electric/15 to-transparent rounded-full" style={{ transform: 'rotate(-15deg)' }} />
       </div>
-    <section className="min-h-screen flex items-center justify-center relative overflow-hidden pt-24">
+
+      {/* Background Mesh */}
+      <div className="absolute inset-0 gradient-mesh opacity-20 pointer-events-none" />
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
@@ -63,11 +69,13 @@ const Hero = () => {
             <SplitText text="with AI" tag="span" className="text-6xl md:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={1.2} />
           </div>
 
-          {/* Badge */}
+          {/* Enhanced Badge */}
           <FadeInOnScroll direction="down" delay={1.4}>
-            <div className="inline-flex items-center gap-2 px-6 py-3 rounded-full glass-card border border-electric/30 mb-8 mt-8 glow-electric-subtle hover-lift">
-              <Sparkles className="w-4 h-4 text-electric" />
-              <span className="text-sm font-semibold text-electric">Your AI Marketing Partner</span>
+            <div className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl glass-card border border-electric/40 mb-8 mt-8 glow-electric-subtle hover-lift group transition-all duration-500">
+              <div className="w-2 h-2 bg-electric rounded-full animate-pulse"></div>
+              <Sparkles className="w-5 h-5 text-electric group-hover:scale-110 transition-transform" />
+              <span className="text-sm font-bold text-electric tracking-wide">Your AI Marketing Partner</span>
+              <div className="w-2 h-2 bg-electric-glow rounded-full animate-pulse" style={{ animationDelay: '1s' }}></div>
             </div>
           </FadeInOnScroll>
 
@@ -84,12 +92,14 @@ const Hero = () => {
             <div className="space-y-10">
               {/* Waitlist Form */}
               <div className="max-w-lg mx-auto">
-                <div className="text-center mb-4">
-                  <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full glass-card border border-electric/30 mb-6 pulse-glow">
-                    <Sparkles className="w-4 h-4 text-electric" />
-                    <span className="text-sm font-semibold text-electric">Launching Q1 2025</span>
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl glass-card border border-electric/40 mb-8 pulse-glow group">
+                    <div className="w-2 h-2 bg-electric rounded-full animate-pulse"></div>
+                    <Sparkles className="w-4 h-4 text-electric group-hover:rotate-12 transition-transform" />
+                    <span className="text-sm font-bold text-electric tracking-wide">Launching Q1 2025</span>
+                    <div className="w-2 h-2 bg-electric-glow rounded-full animate-pulse" style={{ animationDelay: '0.5s' }}></div>
                   </div>
-                  <p className="text-muted-foreground/80 text-lg">
+                  <p className="text-muted-foreground/80 text-xl font-light">
                     Join our waitlist to be first in line for early access
                   </p>
                 </div>
@@ -103,17 +113,19 @@ const Hero = () => {
                     className="flex-1 h-14 input-modern text-lg focus-ring" 
                     disabled={isSubmitting} 
                   />
-                  <Button type="submit" size="lg" className="btn-modern gradient-electric glow-electric group h-14 px-10 text-lg font-semibold" disabled={isSubmitting}>
-                    {isSubmitting ? "Joining..." : "Join Waitlist"}
-                    <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-spring" />
+                  <Button type="submit" size="lg" className="btn-modern gradient-electric glow-electric group h-14 px-10 text-lg font-bold relative overflow-hidden" disabled={isSubmitting}>
+                    <span className="relative z-10">{isSubmitting ? "Joining..." : "Join Waitlist"}</span>
+                    <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-spring relative z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </Button>
                 </form>
               </div>
               
               {/* Demo Button */}
               <div className="flex justify-center">
-                <Button variant="outline" size="lg" className="btn-modern text-lg px-10 py-4 border-electric/30 hover:border-electric/60 hover:bg-electric/10 hover-lift glass-card">
-                  Try Demo
+                <Button variant="outline" size="lg" className="btn-modern text-lg px-10 py-4 border-electric/40 hover:border-electric/80 hover:bg-electric/15 hover-lift glass-card group relative overflow-hidden">
+                  <span className="relative z-10">Try Demo</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-electric/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
                 </Button>
               </div>
             </div>
@@ -125,17 +137,18 @@ const Hero = () => {
               <p className="text-sm text-muted-foreground/60 mb-6 uppercase tracking-wider font-medium">
                 Trusted by forward-thinking companies
               </p>
-              <div className="flex items-center justify-center space-x-8 opacity-40">
-                <div className="text-2xl font-bold text-shimmer">TechCorp</div>
-                <div className="text-2xl font-bold text-shimmer">InnovateLab</div>
-                <div className="text-2xl font-bold text-shimmer">GrowthCo</div>
-                <div className="text-2xl font-bold text-shimmer">ScaleUp</div>
+              <div className="flex items-center justify-center space-x-12 opacity-50">
+                <div className="text-2xl font-bold text-shimmer hover:opacity-80 transition-opacity cursor-default">TechCorp</div>
+                <div className="text-2xl font-bold text-shimmer hover:opacity-80 transition-opacity cursor-default">InnovateLab</div>
+                <div className="text-2xl font-bold text-shimmer hover:opacity-80 transition-opacity cursor-default">GrowthCo</div>
+                <div className="text-2xl font-bold text-shimmer hover:opacity-80 transition-opacity cursor-default">ScaleUp</div>
               </div>
             </div>
           </FadeInOnScroll>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
+
 export default Hero;
-}

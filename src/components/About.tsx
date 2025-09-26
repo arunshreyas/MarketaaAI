@@ -103,13 +103,13 @@ const About = () => {
         {/* Mission Section */}
         <AnimatedContent direction="horizontal" stagger={0.3}>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
-            <Card className="gradient-card border-border/50 shadow-card">
+            <Card className="gradient-card border-border/50 shadow-card hover:shadow-elegant hover:border-electric/30 transition-all duration-500 group">
               <CardHeader>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 rounded-lg bg-electric/10">
-                    <Target className="w-6 h-6 text-electric" />
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-4 rounded-2xl bg-electric/10 group-hover:bg-electric/20 transition-all duration-300 group-hover:scale-110">
+                    <Target className="w-7 h-7 text-electric" />
                   </div>
-                  <CardTitle className="text-2xl font-heading">Our Mission</CardTitle>
+                  <CardTitle className="text-2xl font-heading font-bold group-hover:text-electric transition-colors">Our Mission</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -120,13 +120,13 @@ const About = () => {
               </CardContent>
             </Card>
 
-            <Card className="gradient-card border-border/50 shadow-card">
+            <Card className="gradient-card border-border/50 shadow-card hover:shadow-elegant hover:border-electric/30 transition-all duration-500 group">
               <CardHeader>
-                <div className="flex items-center gap-3 mb-4">
-                  <div className="p-3 rounded-lg bg-electric/10">
-                    <Sparkles className="w-6 h-6 text-electric" />
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="p-4 rounded-2xl bg-electric/10 group-hover:bg-electric/20 transition-all duration-300 group-hover:scale-110">
+                    <Sparkles className="w-7 h-7 text-electric group-hover:rotate-12 transition-transform" />
                   </div>
-                  <CardTitle className="text-2xl font-heading">Why Marketa AI?</CardTitle>
+                  <CardTitle className="text-2xl font-heading font-bold group-hover:text-electric transition-colors">Why Marketa AI?</CardTitle>
                 </div>
               </CardHeader>
               <CardContent>
@@ -152,10 +152,10 @@ const About = () => {
             {benefits.map((benefit, index) => (
               <Card 
                 key={index} 
-                className="gradient-card border-border/50 hover:border-electric/30 transition-smooth shadow-card hover:shadow-elegant group text-center"
+                className="gradient-card border-border/50 hover:border-electric/40 transition-all duration-500 shadow-card hover:shadow-elegant group text-center hover-lift"
               >
                 <CardHeader>
-                  <div className="mx-auto p-4 rounded-lg bg-electric/10 group-hover:bg-electric/20 transition-smooth w-fit mb-4">
+                  <div className="mx-auto p-5 rounded-2xl bg-electric/10 group-hover:bg-electric/20 transition-all duration-300 w-fit mb-6 group-hover:scale-110 group-hover:rotate-3">
                     <benefit.icon className="w-8 h-8 text-electric" />
                   </div>
                   <CardTitle className="text-lg font-heading">

@@ -93,8 +93,8 @@ const Pricing = () => {
           {plans.map((plan, index) => (
             <Card 
               key={index} 
-              className={`gradient-card border-border/50 shadow-card hover:shadow-elegant transition-smooth relative ${
-                plan.popular ? 'border-electric/50 scale-105' : ''
+              className={`gradient-card border-border/50 shadow-card hover:shadow-elegant transition-all duration-500 hover-lift group relative ${
+                plan.popular ? 'border-electric/60 scale-105 glow-electric-subtle' : 'hover:border-electric/40'
               }`}
             >
               {plan.popular && (
@@ -106,10 +106,10 @@ const Pricing = () => {
               )}
               
               <CardHeader className="text-center pb-8">
-                <div className="mx-auto p-3 rounded-lg bg-electric/10 w-fit mb-4">
+                <div className="mx-auto p-4 rounded-2xl bg-electric/10 group-hover:bg-electric/20 w-fit mb-6 transition-all duration-300 group-hover:scale-110">
                   <plan.icon className="w-8 h-8 text-electric" />
                 </div>
-                <CardTitle className="text-2xl font-heading mb-2">{plan.name}</CardTitle>
+                <CardTitle className="text-2xl font-heading font-bold mb-3 group-hover:text-electric transition-colors">{plan.name}</CardTitle>
                 <div className="mb-4">
                   <span className="text-4xl font-bold text-foreground">{plan.price}</span>
                   <span className="text-muted-foreground">{plan.period}</span>
@@ -130,21 +130,24 @@ const Pricing = () => {
                 </ul>
                 
                 <Button 
-                  className={`w-full group transition-bounce ${
+                  className={`w-full group transition-all duration-300 relative overflow-hidden ${
                     plan.popular 
                       ? 'gradient-electric glow-electric' 
-                      : 'border-electric/30 hover:border-electric/60 hover:bg-electric/10'
+                      : 'border-electric/40 hover:border-electric/80 hover:bg-electric/15'
                   }`}
                   variant={plan.popular ? 'default' : 'outline'}
                   disabled={plan.comingSoon}
                 >
                   {plan.comingSoon ? (
-                    "Coming Q1 2025"
+                    <span className="relative z-10 font-bold">Coming Q1 2025</span>
                   ) : (
                     <>
-                      Get Started
-                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-smooth" />
+                      <span className="relative z-10">Get Started</span>
+                      <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-spring relative z-10" />
                     </>
+                  )}
+                  {!plan.comingSoon && (
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   )}
                 </Button>
               </CardContent>
