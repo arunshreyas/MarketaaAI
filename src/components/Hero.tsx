@@ -73,7 +73,7 @@ const Hero = () => {
           <div className="mb-0">
             <SplitText text="Transform Your" tag="h1" className="text-6xl md:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={0.4} />
             <FadeInOnScroll direction="up" delay={0.8} duration={1}>
-              <span className="text-gradient block text-6xl md:text-8xl font-bold font-heading leading-tight tracking-tight">
+              <span className="text-gradient block text-6xl md:text-8xl font-bold font-heading leading-relaxed tracking-tight">
                 Digital Marketing
               </span>
             </FadeInOnScroll>
@@ -140,7 +140,7 @@ const Hero = () => {
 
           {/* Trust Indicators */}
           <FadeInOnScroll direction="up" delay={2.5}>
-            
+            <div className="mt-12"></div>
           </FadeInOnScroll>
         </div>
       </div>
