@@ -96,64 +96,75 @@ const Auth = () => {
 
   return (
     <div className="min-h-screen bg-background flex items-center justify-center p-4">
-      <FadeInOnScroll direction="up" className="w-full max-w-md">
-        <Card className="border-border/50 shadow-lg">
-          <CardHeader className="text-center space-y-3 pb-6">
-            <div className="mx-auto w-14 h-14 rounded-xl gradient-electric flex items-center justify-center">
-              <Sparkles className="w-7 h-7 text-primary-foreground" />
+
+      <FadeInOnScroll direction="up" className="w-full max-w-md relative z-10">
+        <Card className="bg-card/50 border-border/30 shadow-lg backdrop-blur-sm">
+          <CardHeader className="text-center space-y-4 pb-6">
+            <div className="mx-auto w-12 h-12 rounded-xl bg-electric/10 flex items-center justify-center mb-4">
+              <Sparkles className="w-6 h-6 text-electric" />
             </div>
             <div>
-              <CardTitle className="text-2xl font-heading text-foreground">
+              <CardTitle className="text-2xl font-semibold text-foreground">
                 Welcome to Marketa AI
               </CardTitle>
-              <CardDescription className="text-muted-foreground mt-1.5">
-                Transform your business with AI-powered solutions
+              <CardDescription className="text-muted-foreground mt-2">
+                Sign in to your account or create a new one
               </CardDescription>
             </div>
           </CardHeader>
           
-          <CardContent className="space-y-5">
+          <CardContent className="space-y-4">
             <Tabs defaultValue="signin" className="w-full">
-              <TabsList className="grid w-full grid-cols-2 mb-6 bg-muted p-1">
-                <TabsTrigger value="signin">Sign In</TabsTrigger>
-                <TabsTrigger value="signup">Sign Up</TabsTrigger>
+              <TabsList className="grid w-full grid-cols-2 mb-6 bg-surface/50 p-1">
+                <TabsTrigger 
+                  value="signin" 
+                  className="data-[state=active]:bg-electric/10 data-[state=active]:text-electric"
+                >
+                  Sign In
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="signup"
+                  className="data-[state=active]:bg-electric/10 data-[state=active]:text-electric"
+                >
+                  Sign Up
+                </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="signin" className="space-y-5">
-                <div className="space-y-3.5">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="signin-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        id="signin-email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        disabled={isLoading}
-                        className="pl-10"
-                      />
-                    </div>
+              <TabsContent value="signin" className="space-y-4">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-email" className="text-sm font-medium">
+                      Email Address
+                    </Label>
+                    <Input
+                      id="signin-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      disabled={isLoading}
+                      className="bg-surface/50 border-border/50 focus:border-electric/50"
+                    />
                   </div>
                   
-                  <div className="space-y-1.5">
-                    <Label htmlFor="signin-password">Password</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="signin-password" className="text-sm font-medium">
+                      Password
+                    </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="signin-password"
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
+                        placeholder="Enter your password"
                         disabled={isLoading}
-                        className="pl-10 pr-10"
+                        className="pr-10 bg-surface/50 border-border/50 focus:border-electric/50"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
@@ -163,10 +174,19 @@ const Auth = () => {
                 
                 <Button
                   onClick={() => handleEmailAuth('signin')}
-                  className="w-full gradient-electric text-primary-foreground"
+                  className="w-full gradient-electric text-white font-medium"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Signing in..." : "Sign In"}
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Signing in...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <span>Sign In</span>
+                    </div>
+                  )}
                 </Button>
                 
                 <div className="text-center">
@@ -176,55 +196,66 @@ const Auth = () => {
                 </div>
               </TabsContent>
               
-              <TabsContent value="signup" className="space-y-5">
-                <div className="space-y-3.5">
-                  <div className="space-y-1.5">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                      <Input
-                        id="signup-email"
-                        type="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        placeholder="you@example.com"
-                        disabled={isLoading}
-                        className="pl-10"
-                      />
-                    </div>
+              <TabsContent value="signup" className="space-y-4">
+                <div className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-email" className="text-sm font-medium">
+                      Email Address
+                    </Label>
+                    <Input
+                      id="signup-email"
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="Enter your email"
+                      disabled={isLoading}
+                      className="bg-surface/50 border-border/50 focus:border-electric/50"
+                    />
                   </div>
                   
-                  <div className="space-y-1.5">
-                    <Label htmlFor="signup-password">Password</Label>
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-password" className="text-sm font-medium">
+                      Password
+                    </Label>
                     <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
                       <Input
                         id="signup-password"
                         type={showPassword ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
-                        placeholder="••••••••"
+                        placeholder="Create a secure password"
                         disabled={isLoading}
-                        className="pl-10 pr-10"
+                        className="pr-10 bg-surface/50 border-border/50 focus:border-electric/50"
                       />
                       <button
                         type="button"
                         onClick={() => setShowPassword(!showPassword)}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
                       >
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
-                    <p className="text-xs text-muted-foreground">At least 8 characters</p>
+                    <p className="text-xs text-muted-foreground">
+                      Must be at least 8 characters long
+                    </p>
                   </div>
                 </div>
                 
                 <Button
                   onClick={() => handleEmailAuth('signup')}
-                  className="w-full gradient-electric text-primary-foreground"
+                  className="w-full gradient-electric text-white font-medium"
                   disabled={isLoading}
                 >
-                  {isLoading ? "Creating account..." : "Create Account"}
+                  {isLoading ? (
+                    <div className="flex items-center space-x-2">
+                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>Creating account...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center space-x-2">
+                      <span>Create Account</span>
+                    </div>
+                  )}
                 </Button>
                 
                 <p className="text-xs text-muted-foreground text-center leading-relaxed">
@@ -240,23 +271,24 @@ const Auth = () => {
               </TabsContent>
             </Tabs>
             
-            <div className="space-y-3.5">
+            <div className="space-y-3">
               <div className="relative">
                 <div className="absolute inset-0 flex items-center">
-                  <Separator />
+                  <Separator className="w-full" />
                 </div>
                 <div className="relative flex justify-center text-xs uppercase">
                   <span className="bg-card px-3 text-muted-foreground">Or continue with</span>
                 </div>
               </div>
               
-              <div className="grid grid-cols-3 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 <Button
                   variant="outline"
                   onClick={() => handleSocialAuth('google')}
                   disabled={isLoading}
+                  className="border-border/50 hover:border-electric/30 hover:bg-electric/5"
                 >
-                  <svg className="w-5 h-5" viewBox="0 0 24 24">
+                  <svg className="w-4 h-4" viewBox="0 0 24 24">
                     <path
                       fill="currentColor"
                       d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -280,16 +312,18 @@ const Auth = () => {
                   variant="outline"
                   onClick={() => handleSocialAuth('apple')}
                   disabled={isLoading}
+                  className="border-border/50 hover:border-electric/30 hover:bg-electric/5"
                 >
-                  <Apple className="w-5 h-5" />
+                  <Apple className="w-4 h-4" />
                 </Button>
                 
                 <Button
                   variant="outline"
                   onClick={() => handleSocialAuth('github')}
                   disabled={isLoading}
+                  className="border-border/50 hover:border-electric/30 hover:bg-electric/5"
                 >
-                  <Github className="w-5 h-5" />
+                  <Github className="w-4 h-4" />
                 </Button>
               </div>
             </div>
