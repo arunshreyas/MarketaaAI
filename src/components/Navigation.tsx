@@ -6,7 +6,18 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  
+  // Make auth optional for landing page
+  let user = null;
+  let signOut = async () => {};
+  
+  try {
+    const auth = useAuth();
+    user = auth.user;
+    signOut = auth.signOut;
+  } catch {
+    // Auth not available on this page
+  }
 
   return (
     <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-2xl shadow-floating w-[calc(100%-2rem)] max-w-6xl">
