@@ -66,23 +66,23 @@ export function DashboardContent() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Welcome Message */}
-      <div className="space-y-2">
-        <h1 className="text-3xl font-bold text-foreground">
+      <div className="space-y-1">
+        <h1 className="text-2xl font-bold">
           Welcome back, {user?.email?.split('@')[0] || 'there'} 👋
         </h1>
-        <p className="text-lg text-muted-foreground">
+        <p className="text-muted-foreground">
           Ready to launch your next campaign?
         </p>
       </div>
 
       {/* Quick Actions */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {quickActions.map((action) => (
           <Card 
             key={action.title}
-            className="card-modern hover-lift cursor-pointer group relative overflow-hidden"
+            className="cursor-pointer hover:shadow-md transition-shadow"
             onClick={() => {
               if (action.title === "New Campaign") {
                 setIsDialogOpen(true);
@@ -91,45 +91,44 @@ export function DashboardContent() {
               }
             }}
           >
-            <div className="absolute inset-0 gradient-mesh opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-            <CardHeader className="pb-3">
-              <div className={`inline-flex p-4 rounded-xl ${action.color} transition-spring group-hover:scale-110 glow-electric-subtle relative z-10`}>
-                <action.icon className="h-7 w-7" />
+            <CardHeader className="pb-2">
+              <div className={`inline-flex p-3 rounded-lg ${action.color}`}>
+                <action.icon className="h-5 w-5" />
               </div>
             </CardHeader>
             <CardContent>
-              <h3 className="font-semibold text-foreground mb-2 relative z-10 group-hover:text-electric transition-spring text-lg">{action.title}</h3>
-              <p className="text-muted-foreground/80 relative z-10">{action.description}</p>
+              <h3 className="font-semibold text-base mb-1">{action.title}</h3>
+              <p className="text-sm text-muted-foreground">{action.description}</p>
             </CardContent>
           </Card>
         ))}
       </div>
 
       {/* Campaigns Section */}
-      <div className="space-y-6">
+      <div className="space-y-4">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-foreground">Recent Campaigns</h2>
-          <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
-            <Plus className="h-4 w-4 mr-2" />
+          <h2 className="text-xl font-bold">Recent Campaigns</h2>
+          <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} size="sm" className="gradient-electric text-primary-foreground">
+            <Plus className="h-4 w-4 mr-1.5" />
             New Campaign
           </Button>
         </div>
 
         {(!campaigns || campaigns.length === 0) ? (
           // Empty State
-          <Card className="card-modern">
-            <CardContent className="flex flex-col items-center justify-center py-16 text-center">
-              <div className="gradient-electric p-6 rounded-full glow-electric mb-8 pulse-glow">
-                <Rocket className="h-12 w-12 text-primary-foreground" />
+          <Card>
+            <CardContent className="flex flex-col items-center justify-center py-12 text-center">
+              <div className="gradient-electric p-4 rounded-full mb-4">
+                <Rocket className="h-8 w-8 text-primary-foreground" />
               </div>
-              <h3 className="text-2xl font-semibold text-foreground mb-4">
-                No campaigns yet — start your first one in 60 seconds
+              <h3 className="text-lg font-semibold mb-2">
+                No campaigns yet
               </h3>
-              <p className="text-muted-foreground/80 mb-8 max-w-md text-lg leading-relaxed">
+              <p className="text-sm text-muted-foreground mb-6 max-w-md">
                 Create your first marketing campaign and watch your business grow with AI-powered insights.
               </p>
-              <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="btn-modern gradient-electric text-primary-foreground glow-electric hover-lift">
-                <Plus className="h-4 w-4 mr-2" />
+              <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="gradient-electric text-primary-foreground">
+                <Plus className="h-4 w-4 mr-1.5" />
                 Create Campaign
               </Button>
             </CardContent>

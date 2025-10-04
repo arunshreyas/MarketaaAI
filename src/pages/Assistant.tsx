@@ -171,96 +171,95 @@ const Assistant = () => {
   return (
     <div className="h-full flex flex-col">
       {/* Header */}
-      <div className="border-b border-border/20 bg-card/50 backdrop-blur-xl p-6">
-        <div className="flex items-center space-x-3">
-          <div className="gradient-electric p-3 rounded-lg glow-electric">
-            <Bot className="h-6 w-6 text-primary-foreground" />
+      <div className="border-b border-border bg-background/50 backdrop-blur-sm p-4">
+        <div className="flex items-center gap-3">
+          <div className="gradient-electric p-2.5 rounded-lg">
+            <Bot className="h-5 w-5 text-primary-foreground" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold text-foreground">AI Marketing Assistant</h1>
-            <p className="text-muted-foreground">Get personalized marketing insights and strategies</p>
+            <h1 className="text-xl font-bold">AI Assistant</h1>
+            <p className="text-sm text-muted-foreground">Get personalized marketing insights</p>
           </div>
         </div>
       </div>
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col min-h-0">
-        <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
+        <ScrollArea className="flex-1 p-4" ref={scrollAreaRef}>
           {messages.length === 0 ? (
-            <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
-              <div className="gradient-electric p-4 rounded-full glow-electric">
-                <MessageSquare className="h-12 w-12 text-primary-foreground" />
+            <div className="flex flex-col items-center justify-center h-full text-center space-y-3">
+              <div className="gradient-electric p-3.5 rounded-full">
+                <MessageSquare className="h-10 w-10 text-primary-foreground" />
               </div>
-              <div className="space-y-2">
-                <h3 className="text-xl font-semibold text-foreground">Start a conversation</h3>
-                <p className="text-muted-foreground max-w-md">
-                  Ask me anything about marketing strategies, campaign optimization,
-                  audience targeting, or any other marketing-related questions.
+              <div className="space-y-1.5">
+                <h3 className="text-lg font-semibold">Start a conversation</h3>
+                <p className="text-sm text-muted-foreground max-w-md">
+                  Ask me anything about marketing strategies, campaigns, or audience targeting.
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 max-w-2xl">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5 mt-4 max-w-2xl">
                 <Button
                   variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
+                  className="text-left justify-start h-auto p-3 text-sm"
                   onClick={() => setInputMessage("How can I improve my email marketing campaigns?")}
                 >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>How can I improve my email marketing campaigns?</span>
+                  <Sparkles className="h-3.5 w-3.5 mr-2 text-electric shrink-0" />
+                  <span>How can I improve my email marketing?</span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
+                  className="text-left justify-start h-auto p-3 text-sm"
                   onClick={() => setInputMessage("What's the best way to target my audience on social media?")}
                 >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>What's the best way to target my audience on social media?</span>
+                  <Sparkles className="h-3.5 w-3.5 mr-2 text-electric shrink-0" />
+                  <span>Best way to target my audience?</span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
+                  className="text-left justify-start h-auto p-3 text-sm"
                   onClick={() => setInputMessage("How do I measure the ROI of my marketing campaigns?")}
                 >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>How do I measure the ROI of my marketing campaigns?</span>
+                  <Sparkles className="h-3.5 w-3.5 mr-2 text-electric shrink-0" />
+                  <span>Measure marketing campaign ROI?</span>
                 </Button>
                 <Button
                   variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
+                  className="text-left justify-start h-auto p-3 text-sm"
                   onClick={() => setInputMessage("What are the latest digital marketing trends?")}
                 >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>What are the latest digital marketing trends?</span>
+                  <Sparkles className="h-3.5 w-3.5 mr-2 text-electric shrink-0" />
+                  <span>Latest digital marketing trends?</span>
                 </Button>
               </div>
             </div>
           ) : (
-            <div className="space-y-4">
+            <div className="space-y-3">
               {messages.map((message) => (
                 <div
                   key={message.id}
-                  className={`flex items-start space-x-3 ${
-                    message.isUser ? "flex-row-reverse space-x-reverse" : ""
+                  className={`flex items-start gap-2.5 ${
+                    message.isUser ? "flex-row-reverse" : ""
                   }`}
                 >
-                  <Avatar className={`w-8 h-8 ${message.isUser ? "bg-electric/10" : "bg-surface"}`}>
+                  <Avatar className={`w-7 h-7 shrink-0 ${message.isUser ? "bg-electric/10" : "bg-muted"}`}>
                     <AvatarFallback>
                       {message.isUser ? (
-                        <User className="h-4 w-4 text-electric" />
+                        <User className="h-3.5 w-3.5 text-electric" />
                       ) : (
-                        <Bot className="h-4 w-4 text-electric" />
+                        <Bot className="h-3.5 w-3.5 text-electric" />
                       )}
                     </AvatarFallback>
                   </Avatar>
                   <Card
-                    className={`max-w-[80%] ${
-                      message.isUser ? "gradient-electric text-primary-foreground" : "gradient-card border-border/20"
+                    className={`max-w-[85%] ${
+                      message.isUser ? "gradient-electric text-primary-foreground" : "border-border"
                     }`}
                   >
-                    <CardContent className="p-3">
+                    <CardContent className="p-2.5">
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">
                         {message.content}
                       </p>
-                      <p className={`text-xs mt-2 ${message.isUser ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                      <p className={`text-xs mt-1.5 ${message.isUser ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
                         {message.timestamp.toLocaleTimeString()}
                       </p>
                     </CardContent>
@@ -268,21 +267,21 @@ const Assistant = () => {
                 </div>
               ))}
               {isLoading && (
-                <div className="flex items-start space-x-3">
-                  <Avatar className="w-8 h-8 bg-surface">
+                <div className="flex items-start gap-2.5">
+                  <Avatar className="w-7 h-7 bg-muted">
                     <AvatarFallback>
-                      <Bot className="h-4 w-4 text-electric" />
+                      <Bot className="h-3.5 w-3.5 text-electric" />
                     </AvatarFallback>
                   </Avatar>
-                  <Card className="gradient-card border-border/20">
-                    <CardContent className="p-3">
-                      <div className="flex items-center space-x-2">
-                        <div className="flex space-x-1">
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" />
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+                  <Card className="border-border">
+                    <CardContent className="p-2.5">
+                      <div className="flex items-center gap-2">
+                        <div className="flex gap-1">
+                          <div className="w-1.5 h-1.5 bg-electric rounded-full animate-bounce" />
+                          <div className="w-1.5 h-1.5 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
+                          <div className="w-1.5 h-1.5 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
                         </div>
-                        <span className="text-sm text-muted-foreground">AI is thinking...</span>
+                        <span className="text-xs text-muted-foreground">Thinking...</span>
                       </div>
                     </CardContent>
                   </Card>
@@ -293,28 +292,27 @@ const Assistant = () => {
         </ScrollArea>
 
         {/* Input Area */}
-        <div className="border-t border-border/20 bg-card/50 backdrop-blur-xl p-6">
-          <div className="flex items-end space-x-3">
-            <div className="flex-1">
-              <Input
-                value={inputMessage}
-                onChange={(e) => setInputMessage(e.target.value)}
-                onKeyPress={handleKeyPress}
-                placeholder="Ask me anything about marketing..."
-                disabled={isLoading}
-                className="min-h-[48px] bg-surface/50 border-border/50 focus:border-electric/50 focus:ring-electric/20 resize-none"
-              />
-            </div>
+        <div className="border-t border-border bg-background/50 backdrop-blur-sm p-4">
+          <div className="flex items-center gap-2">
+            <Input
+              value={inputMessage}
+              onChange={(e) => setInputMessage(e.target.value)}
+              onKeyPress={handleKeyPress}
+              placeholder="Ask me anything..."
+              disabled={isLoading}
+              className="h-10"
+            />
             <Button
               onClick={handleSendMessage}
               disabled={!inputMessage.trim() || isLoading}
-              className="gradient-electric glow-electric text-primary-foreground h-12 px-6 group"
+              size="icon"
+              className="gradient-electric text-primary-foreground h-10 w-10 shrink-0"
             >
-              <Send className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              <Send className="h-4 w-4" />
             </Button>
           </div>
           <p className="text-xs text-muted-foreground mt-2 text-center">
-            Press Enter to send • Shift + Enter for new line
+            Press Enter to send
           </p>
         </div>
       </div>
