@@ -40,26 +40,26 @@
     --electric: 217 91% 60%;
     --electric-glow: 210 98% 78%;
     --electric-dim: 217 71% 45%;
-    --deep-bg: 210 40% 98%;
+    --deep-bg: 0 0% 100%;
     --card-bg: 0 0% 100%;
-    --surface: 210 40% 96%;
-    --surface-elevated: 214 32% 91%;
+    --surface: 210 40% 98%;
+    --surface-elevated: 214 32% 96%;
     
     /* Advanced Gradients - Blue Theme */
     --gradient-electric: linear-gradient(135deg, hsl(217 91% 60%), hsl(210 98% 78%));
-    --gradient-electric-subtle: linear-gradient(135deg, hsl(217 91% 60% / 0.1), hsl(210 98% 78% / 0.1));
-    --gradient-hero: radial-gradient(ellipse at top, hsl(210 40% 98%), hsl(0 0% 100%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(210 40% 98%));
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.8), hsl(210 40% 98% / 0.6));
-    --gradient-mesh: conic-gradient(from 0deg at 50% 50%, hsl(217 91% 60% / 0.08), hsl(210 98% 78% / 0.08), hsl(217 91% 60% / 0.08));
+    --gradient-electric-subtle: linear-gradient(135deg, hsl(217 91% 60% / 0.05), hsl(210 98% 78% / 0.05));
+    --gradient-hero: radial-gradient(ellipse at top, hsl(0 0% 100%), hsl(210 40% 99%));
+    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 100%));
+    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.95), hsl(210 40% 99% / 0.9));
+    --gradient-mesh: conic-gradient(from 0deg at 50% 50%, hsl(217 91% 60% / 0.03), hsl(210 98% 78% / 0.03), hsl(217 91% 60% / 0.03));
     
     /* Enhanced Shadows & Glows - Blue Theme */
-    --glow-electric: 0 0 60px hsl(217 91% 60% / 0.3), 0 0 120px hsl(217 91% 60% / 0.15);
-    --glow-electric-subtle: 0 0 30px hsl(217 91% 60% / 0.15);
-    --shadow-elegant: 0 25px 50px hsl(217 91% 60% / 0.15), 0 0 0 1px hsl(214 32% 91%);
-    --shadow-card: 0 10px 40px hsl(217 91% 60% / 0.08), 0 0 0 1px hsl(214 32% 91%);
-    --shadow-glass: 0 8px 32px hsl(217 91% 60% / 0.1), inset 0 1px 0 hsl(0 0% 100%);
-    --shadow-floating: 0 20px 60px hsl(217 91% 60% / 0.12), 0 8px 25px hsl(217 91% 60% / 0.08);
+    --glow-electric: 0 0 40px hsl(217 91% 60% / 0.15), 0 0 80px hsl(217 91% 60% / 0.08);
+    --glow-electric-subtle: 0 0 20px hsl(217 91% 60% / 0.08);
+    --shadow-elegant: 0 4px 16px hsl(217 91% 60% / 0.08);
+    --shadow-card: 0 2px 8px hsl(217 91% 60% / 0.04);
+    --shadow-glass: 0 4px 16px hsl(217 91% 60% / 0.06);
+    --shadow-floating: 0 8px 24px hsl(217 91% 60% / 0.08);
     
     /* Typography Scale */
     --font-heading: 'Inter', system-ui, sans-serif;
@@ -129,7 +129,7 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
-    background: var(--gradient-hero);
+    background: hsl(0 0% 100%);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
   
@@ -237,20 +237,17 @@
 
   /* Glass Morphism - Blue Theme */
   .glass {
-    background: rgba(255, 255, 255, 0.6);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(217, 225, 255, 0.3);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(217, 225, 255, 0.2);
   }
 
   .glass-card {
-    background: linear-gradient(135deg, 
-      rgba(255, 255, 255, 0.8), 
-      rgba(240, 248, 255, 0.6)
-    );
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid rgba(217, 225, 255, 0.3);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(217, 225, 255, 0.15);
   }
 
   /* Hover Effects */
@@ -349,9 +346,9 @@
   }
 
   .card-modern {
-    @apply relative overflow-hidden rounded-2xl border border-border/50 gradient-card backdrop-blur-sm;
-    @apply shadow-card transition-all duration-300;
-    @apply hover:shadow-elegant hover:border-electric/30;
+    @apply relative overflow-hidden rounded-xl border border-border/30 bg-white;
+    @apply shadow-card transition-all duration-200;
+    @apply hover:shadow-elegant hover:border-electric/20;
   }
 
   .input-modern {
