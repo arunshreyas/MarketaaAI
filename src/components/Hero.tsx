@@ -40,7 +40,7 @@ const Hero = () => {
     }
   };
   return <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
-      <DarkVeil className="absolute inset-0 z-0 opacity-60" />
+      <DarkVeil className="absolute inset-0 z-0 opacity-40" hueShift={150} />
       
       {/* Enhanced Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
