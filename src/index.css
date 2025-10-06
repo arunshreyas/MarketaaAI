@@ -6,60 +6,60 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222 47% 11%;
+    --background: 220 13% 3%;
+    --foreground: 210 40% 98%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card: 220 13% 5%;
+    --card-foreground: 210 40% 98%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover: 220 13% 5%;
+    --popover-foreground: 210 40% 98%;
 
-    --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary: 262 83% 58%;
+    --primary-foreground: 210 40% 98%;
 
-    --secondary: 214 32% 91%;
-    --secondary-foreground: 222 47% 11%;
+    --secondary: 220 13% 10%;
+    --secondary-foreground: 210 40% 98%;
 
-    --muted: 210 40% 96%;
-    --muted-foreground: 215 16% 47%;
+    --muted: 220 13% 10%;
+    --muted-foreground: 215 20.2% 65.1%;
 
-    --accent: 210 40% 96%;
-    --accent-foreground: 222 47% 11%;
+    --accent: 262 83% 58%;
+    --accent-foreground: 210 40% 98%;
 
-    --destructive: 0 84% 60%;
-    --destructive-foreground: 0 0% 100%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
 
-    --border: 214 32% 91%;
-    --input: 214 32% 91%;
-    --ring: 217 91% 60%;
+    --border: 220 13% 10%;
+    --input: 220 13% 8%;
+    --ring: 262 83% 58%;
 
     --radius: 1rem;
 
-    /* Enhanced Marketa AI Design Tokens - Blue Theme */
-    --electric: 217 91% 60%;
-    --electric-glow: 210 98% 78%;
-    --electric-dim: 217 71% 45%;
-    --deep-bg: 0 0% 100%;
-    --card-bg: 0 0% 100%;
-    --surface: 210 40% 98%;
-    --surface-elevated: 214 32% 96%;
+    /* Enhanced Marketa AI Design Tokens */
+    --electric: 262 83% 58%;
+    --electric-glow: 262 100% 70%;
+    --electric-dim: 262 50% 40%;
+    --deep-bg: 220 13% 3%;
+    --card-bg: 220 13% 5%;
+    --surface: 220 13% 7%;
+    --surface-elevated: 220 13% 9%;
     
-    /* Advanced Gradients - Blue Theme */
-    --gradient-electric: linear-gradient(135deg, hsl(217 91% 60%), hsl(210 98% 78%));
-    --gradient-electric-subtle: linear-gradient(135deg, hsl(217 91% 60% / 0.05), hsl(210 98% 78% / 0.05));
-    --gradient-hero: radial-gradient(ellipse at top, hsl(0 0% 100%), hsl(210 40% 99%));
-    --gradient-card: linear-gradient(135deg, hsl(0 0% 100%), hsl(0 0% 100%));
-    --gradient-glass: linear-gradient(135deg, hsl(0 0% 100% / 0.95), hsl(210 40% 99% / 0.9));
-    --gradient-mesh: conic-gradient(from 0deg at 50% 50%, hsl(217 91% 60% / 0.03), hsl(210 98% 78% / 0.03), hsl(217 91% 60% / 0.03));
+    /* Advanced Gradients */
+    --gradient-electric: linear-gradient(135deg, hsl(262 83% 58%), hsl(232 100% 70%));
+    --gradient-electric-subtle: linear-gradient(135deg, hsl(262 83% 58% / 0.1), hsl(232 100% 70% / 0.1));
+    --gradient-hero: radial-gradient(ellipse at top, hsl(220 13% 5%), hsl(220 13% 3%));
+    --gradient-card: linear-gradient(135deg, hsl(220 13% 5%), hsl(220 13% 7%));
+    --gradient-glass: linear-gradient(135deg, hsl(220 13% 8% / 0.8), hsl(220 13% 6% / 0.6));
+    --gradient-mesh: conic-gradient(from 0deg at 50% 50%, hsl(262 83% 58% / 0.1), hsl(232 100% 70% / 0.1), hsl(262 83% 58% / 0.1));
     
-    /* Enhanced Shadows & Glows - Blue Theme */
-    --glow-electric: 0 0 40px hsl(217 91% 60% / 0.15), 0 0 80px hsl(217 91% 60% / 0.08);
-    --glow-electric-subtle: 0 0 20px hsl(217 91% 60% / 0.08);
-    --shadow-elegant: 0 4px 16px hsl(217 91% 60% / 0.08);
-    --shadow-card: 0 2px 8px hsl(217 91% 60% / 0.04);
-    --shadow-glass: 0 4px 16px hsl(217 91% 60% / 0.06);
-    --shadow-floating: 0 8px 24px hsl(217 91% 60% / 0.08);
+    /* Enhanced Shadows & Glows */
+    --glow-electric: 0 0 60px hsl(262 83% 58% / 0.4), 0 0 120px hsl(262 83% 58% / 0.2);
+    --glow-electric-subtle: 0 0 30px hsl(262 83% 58% / 0.2);
+    --shadow-elegant: 0 25px 50px hsl(220 13% 1% / 0.9), 0 0 0 1px hsl(220 13% 10%);
+    --shadow-card: 0 10px 40px hsl(220 13% 1% / 0.7), 0 0 0 1px hsl(220 13% 8%);
+    --shadow-glass: 0 8px 32px hsl(220 13% 1% / 0.5), inset 0 1px 0 hsl(220 13% 15%);
+    --shadow-floating: 0 20px 60px hsl(220 13% 1% / 0.8), 0 8px 25px hsl(220 13% 1% / 0.6);
     
     /* Typography Scale */
     --font-heading: 'Inter', system-ui, sans-serif;
@@ -129,7 +129,7 @@
 
   body {
     @apply bg-background text-foreground font-body antialiased;
-    background: hsl(0 0% 100%);
+    background: var(--gradient-hero);
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   }
   
@@ -235,19 +235,22 @@
     transition: var(--transition-elastic);
   }
 
-  /* Glass Morphism - Blue Theme */
+  /* Glass Morphism */
   .glass {
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(217, 225, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   .glass-card {
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(217, 225, 255, 0.15);
+    background: linear-gradient(135deg, 
+      rgba(255, 255, 255, 0.1), 
+      rgba(255, 255, 255, 0.05)
+    );
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
   }
 
   /* Hover Effects */
@@ -346,9 +349,9 @@
   }
 
   .card-modern {
-    @apply relative overflow-hidden rounded-xl border border-border/30 bg-white;
-    @apply shadow-card transition-all duration-200;
-    @apply hover:shadow-elegant hover:border-electric/20;
+    @apply relative overflow-hidden rounded-2xl border border-border/50 gradient-card backdrop-blur-sm;
+    @apply shadow-card transition-all duration-300;
+    @apply hover:shadow-elegant hover:border-electric/30;
   }
 
   .input-modern {
