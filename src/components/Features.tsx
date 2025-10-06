@@ -8,56 +8,56 @@ const Features = () => {
     {
       icon: Brain,
       title: "AI Campaign Creation",
-      description: "Generate high-converting campaigns with AI that understands your brand voice and target audience.",
-      badge: "Smart"
+      description: "Generate high-converting campaigns with AI that will understand your brand voice and target audience.",
+      badge: "Coming Soon"
     },
     {
       icon: Target,
       title: "Precision Targeting",
       description: "Reach the right customers at the right time with advanced audience segmentation and behavioral analysis.",
-      badge: "Accurate"
+      badge: "Planned"
     },
     {
       icon: BarChart3,
       title: "Real-time Analytics",
       description: "Track performance, optimize ROI, and make data-driven decisions with comprehensive dashboards.",
-      badge: "Insights"
+      badge: "Planned"
     },
     {
       icon: Zap,
       title: "Automated Optimization",
-      description: "Let AI continuously improve your campaigns, adjusting bids, targeting, and creative elements.",
-      badge: "Efficient"
+      description: "AI will continuously improve your campaigns, adjusting bids, targeting, and creative elements.",
+      badge: "In Development"
     },
     {
       icon: Users,
       title: "Audience Intelligence",
       description: "Discover new customer segments and understand what motivates your audience to take action.",
-      badge: "Smart"
+      badge: "Planned"
     },
     {
       icon: MessageSquare,
       title: "Content Generation",
       description: "Create compelling ad copy, social posts, and email campaigns that engage and convert.",
-      badge: "Creative"
+      badge: "In Development"
     },
     {
       icon: TrendingUp,
       title: "Growth Acceleration",
-      description: "Scale your marketing efforts with AI-powered strategies that grow with your business.",
-      badge: "Scalable"
+      description: "Scale your marketing efforts with AI-powered strategies that will grow with your business.",
+      badge: "Planned"
     },
     {
       icon: Shield,
       title: "Brand Safety",
       description: "Protect your brand reputation with AI monitoring and compliance checks across all channels.",
-      badge: "Secure"
+      badge: "Planned"
     },
     {
       icon: Clock,
       title: "24/7 Monitoring",
       description: "Never miss an opportunity with round-the-clock campaign monitoring and instant alerts.",
-      badge: "Always On"
+      badge: "Planned"
     }
   ];
 
@@ -78,8 +78,8 @@ const Features = () => {
               Digital Marketing Success
             </span>
             <p className="text-lg text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              From AI-driven campaign creation to real-time optimization, 
-              Marketa AI provides all the tools you need to succeed.
+              From AI-driven campaign creation to real-time optimization,
+              Marketa AI will provide all the tools you need to succeed.
             </p>
           </div>
         </FadeInOnScroll>
@@ -133,8 +133,8 @@ const Features = () => {
               </span>
             <FadeInOnScroll direction="up" delay={1}>
               <p className="text-xl text-muted-foreground/80 max-w-4xl mx-auto leading-relaxed font-light">
-                From AI-driven campaign creation to real-time optimization, 
-                Marketa AI provides all the tools you need to succeed in today's competitive landscape.
+                From AI-driven campaign creation to real-time optimization,
+                Marketa AI will provide all the tools you need to succeed in today's competitive landscape.
               </p>
             </FadeInOnScroll>
           </div>
@@ -178,7 +178,7 @@ const Features = () => {
           <div className="text-center mt-20">
             <div className="inline-flex items-center gap-3 text-sm text-muted-foreground/70 mb-6 px-4 py-2 rounded-full glass-card">
               <Sparkles className="w-4 h-4 text-electric" />
-              <span className="font-medium">Join thousands of marketers already using Marketa AI</span>
+              <span className="font-medium">Join the waitlist - be among the first to experience Marketa AI</span>
             </div>
           </div>
         </FadeInOnScroll>

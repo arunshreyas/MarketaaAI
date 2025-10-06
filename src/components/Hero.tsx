@@ -26,7 +26,7 @@ const Hero = () => {
       if (error) throw error;
       toast({
         title: "Welcome to the waitlist!",
-        description: "We'll notify you as soon as Marketa AI launches."
+        description: "We'll notify you when Marketa AI is ready for early access."
       });
       setEmail("");
     } catch (error: any) {
@@ -89,8 +89,8 @@ const Hero = () => {
           </FadeInOnScroll>
           <FadeInOnScroll direction="up" delay={1.6} duration={0.8}>
             <p className="text-lg md:text-xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
-              Marketa AI learns your business, crafts campaigns that resonate, and delivers results 
-              without the complexity. <span className="text-foreground font-medium">Your brand's creative spark, strategist, and growth engine</span>—all in one.
+              We're building an AI marketing platform that will learn your business, craft campaigns that resonate, and deliver results
+              without the complexity. <span className="text-foreground font-medium">Your brand's future creative spark, strategist, and growth engine</span>—all in one.
             </p>
           </FadeInOnScroll>
 

@@ -35,7 +35,7 @@ const About = () => {
 
       toast({
         title: "Welcome to the waitlist!",
-        description: "We'll notify you as soon as Marketa AI launches.",
+        description: "We'll notify you when Marketa AI is ready for early access.",
       });
       setEmail("");
     } catch (error: any) {
@@ -53,17 +53,17 @@ const About = () => {
     {
       icon: Clock,
       title: "Save 90% of time on campaign creation",
-      description: "What used to take days now takes minutes with AI-powered automation."
+      description: "What takes days will take minutes with AI-powered automation."
     },
     {
       icon: Users,
       title: "Consistent brand voice across all channels",
-      description: "Maintain your unique brand personality across every touchpoint."
+      description: "Maintain your unique brand personality across every touchpoint automatically."
     },
     {
       icon: BarChart3,
       title: "Data-driven optimization for better results",
-      description: "Continuous learning and improvement based on real performance data."
+      description: "AI-powered continuous learning and improvement based on real performance data."
     }
   ];
 
@@ -77,7 +77,7 @@ const About = () => {
               About Marketa AI
             </Badge>
             <SplitText 
-              text="Building the Future of"
+              text="We're Building the Future of"
               tag="h2"
               className="text-4xl md:text-5xl font-bold font-heading mb-2"
               splitType="words"
@@ -93,8 +93,8 @@ const About = () => {
             />
             <FadeInOnScroll direction="up" delay={1}>
               <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-                Marketa AI combines advanced artificial intelligence with deep marketing expertise 
-                to create campaigns that actually convert.
+                Marketa AI is being built to combine advanced artificial intelligence with deep marketing expertise
+                to create campaigns that actually convert. Currently in development.
               </p>
             </FadeInOnScroll>
           </div>
@@ -114,7 +114,7 @@ const About = () => {
               </CardHeader>
               <CardContent>
                 <CardDescription className="text-muted-foreground leading-relaxed text-base">
-                  To democratize high-quality marketing by making professional-grade campaign creation 
+                  We're working to democratize high-quality marketing by making professional-grade campaign creation
                   accessible to businesses of all sizes. We believe every company deserves marketing that works.
                 </CardDescription>
               </CardContent>
@@ -178,11 +178,11 @@ const About = () => {
             <Card className="gradient-card border-electric/30 shadow-elegant max-w-2xl mx-auto">
               <CardHeader>
                 <CardTitle className="text-3xl font-heading mb-4">
-                  Ready to Transform Your Marketing?
+                  Be First to Experience the Future
                 </CardTitle>
                 <CardDescription className="text-lg text-muted-foreground">
-                  We're putting the finishing touches on Marketa AI. The waitlist is now open 
-                  in our hero section above - join thousands of marketers preparing for the future.
+                  We're hard at work building Marketa AI. The waitlist is now open
+                  in our hero section above - join early adopters preparing for launch.
                 </CardDescription>
               </CardHeader>
               <CardContent>
