@@ -2,15 +2,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { 
-  Target, 
-  Clock, 
-  BarChart3, 
-  Users,
-  ArrowRight,
-  CheckCircle,
-  Sparkles
-} from "lucide-react";
+import { Target, Clock, ChartBar as BarChart3, Users, ArrowRight, CircleCheck as CheckCircle, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
