@@ -21,35 +21,37 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     // Set up auth state listener FIRST
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
+      (event, session) => {
         setSession(session);
         setUser(session?.user ?? null);
         setIsLoading(false);
 
         // Create profile for OAuth users if it doesn't exist
         if (event === 'SIGNED_IN' && session?.user) {
-          const { data: profile } = await supabase
-            .from('profiles')
-            .select('id')
-            .eq('id', session.user.id)
-            .maybeSingle();
+          (async () => {
+            const { data: profile } = await supabase
+              .from('profiles')
+              .select('id')
+              .eq('id', session.user.id)
+              .maybeSingle();
 
-          if (!profile) {
-            const email = session.user.email || '';
-            const fullName = session.user.user_metadata?.full_name || '';
-            const [firstName = '', lastName = ''] = fullName.split(' ');
-            const username = session.user.user_metadata?.user_name ||
-                           session.user.user_metadata?.preferred_username ||
-                           email.split('@')[0];
+            if (!profile) {
+              const email = session.user.email || '';
+              const fullName = session.user.user_metadata?.full_name || '';
+              const [firstName = '', lastName = ''] = fullName.split(' ');
+              const username = session.user.user_metadata?.user_name ||
+                             session.user.user_metadata?.preferred_username ||
+                             email.split('@')[0];
 
-            await supabase.from('profiles').insert({
-              id: session.user.id,
-              email,
-              username,
-              first_name: firstName || username,
-              last_name: lastName || '',
-            });
-          }
+              await supabase.from('profiles').insert({
+                id: session.user.id,
+                email,
+                username,
+                first_name: firstName || username,
+                last_name: lastName || '',
+              });
+            }
+          })();
         }
 
         // Redirect authenticated users to dashboard or away from auth page
