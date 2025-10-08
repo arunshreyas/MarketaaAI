@@ -13,6 +13,15 @@ import { useAuth } from "@/hooks/useAuth";
 export function DashboardHeader() {
   const { user, signOut } = useAuth();
 
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
+
   return (
     <header className="border-b border-border/20 bg-card/50 backdrop-blur-xl">
       <div className="flex items-center justify-between px-6 py-4">
@@ -56,8 +65,8 @@ export function DashboardHeader() {
               <DropdownMenuItem className="hover:bg-surface transition-smooth">
                 Billing
               </DropdownMenuItem>
-              <DropdownMenuItem 
-                onClick={signOut}
+              <DropdownMenuItem
+                onClick={handleSignOut}
                 className="hover:bg-destructive/10 hover:text-destructive transition-smooth"
               >
                 Sign Out

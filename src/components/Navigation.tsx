@@ -6,11 +6,11 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  
+
   // Make auth optional for landing page
   let user = null;
   let signOut = async () => {};
-  
+
   try {
     const auth = useAuth();
     user = auth.user;
@@ -18,6 +18,15 @@ const Navigation = () => {
   } catch {
     // Auth not available on this page
   }
+
+  const handleSignOut = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    try {
+      await signOut();
+    } catch (error) {
+      console.error('Sign out error:', error);
+    }
+  };
 
   return (
     <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-2xl shadow-floating w-[calc(100%-2rem)] max-w-6xl">
@@ -57,10 +66,10 @@ const Navigation = () => {
                     Dashboard
                   </Button>
                 </Link>
-                <Button 
-                  variant="outline" 
+                <Button
+                  variant="outline"
                   size="sm"
-                  onClick={signOut}
+                  onClick={handleSignOut}
                   className="flex items-center space-x-2 hover-lift border-border/30 hover:border-electric/30"
                 >
                   <LogOut className="w-4 h-4" />
@@ -117,10 +126,10 @@ const Navigation = () => {
                         Dashboard
                       </Button>
                     </Link>
-                    <Button 
-                      variant="ghost" 
+                    <Button
+                      variant="ghost"
                       size="sm"
-                      onClick={signOut}
+                      onClick={handleSignOut}
                       className="flex items-center space-x-2 justify-start"
                     >
                       <LogOut className="w-4 h-4" />
