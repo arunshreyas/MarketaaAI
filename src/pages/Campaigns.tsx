@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Plus, Rocket } from "lucide-react";
+import { Plus, Rocket, Workflow, Sparkles, Bot, BarChart3, ExternalLink } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
 import NewCampaignDialog from "@/components/campaigns/NewCampaignDialog";
+import { useNavigate } from "react-router-dom";
 
 type Campaign = {
   id: number;
@@ -16,9 +17,41 @@ type Campaign = {
   channels: any;
 };
 
+const tools = [
+  {
+    title: "Funnels",
+    description: "Build conversion funnels",
+    icon: Workflow,
+    url: "/dashboard/funnels",
+    color: "text-blue-400",
+  },
+  {
+    title: "Ad Generator",
+    description: "Create AI-powered ads",
+    icon: Sparkles,
+    url: "/dashboard/ad-generator",
+    color: "text-purple-400",
+  },
+  {
+    title: "AI Assistant",
+    description: "Chat with marketing AI",
+    icon: Bot,
+    url: "/dashboard/assistant",
+    color: "text-electric",
+  },
+  {
+    title: "Analytics",
+    description: "View campaign insights",
+    icon: BarChart3,
+    url: "/dashboard/analytics",
+    color: "text-green-400",
+  },
+];
+
 const Campaigns = () => {
   const { user } = useAuth();
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -64,12 +97,46 @@ const Campaigns = () => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-foreground">Campaigns</h1>
+        <div>
+          <h1 className="text-2xl font-bold text-foreground">Campaigns</h1>
+          <p className="text-muted-foreground mt-1">Build and manage your marketing campaigns</p>
+        </div>
         <Button onClick={() => setIsDialogOpen(true)} disabled={isLoading} className="gradient-electric text-primary-foreground glow-electric hover:opacity-90 transition-smooth">
           <Plus className="h-4 w-4 mr-2" />
           New Campaign
         </Button>
       </div>
+
+      <div>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Marketing Tools</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          {tools.map((tool) => (
+            <Card
+              key={tool.title}
+              onClick={() => navigate(tool.url)}
+              className="gradient-card border-border/20 hover:border-electric/20 transition-all duration-300 cursor-pointer hover:scale-105 shadow-card hover:shadow-elegant group"
+            >
+              <CardContent className="p-6">
+                <div className="flex items-start justify-between">
+                  <div className="space-y-3 flex-1">
+                    <div className={`inline-flex items-center justify-center w-12 h-12 rounded-lg bg-surface group-hover:bg-electric/10 transition-colors ${tool.color}`}>
+                      <tool.icon className="h-6 w-6" />
+                    </div>
+                    <div>
+                      <h3 className="font-semibold text-foreground group-hover:text-electric transition-colors">{tool.title}</h3>
+                      <p className="text-sm text-muted-foreground mt-1">{tool.description}</p>
+                    </div>
+                  </div>
+                  <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-electric transition-colors" />
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h2 className="text-lg font-semibold text-foreground mb-4">Your Campaigns</h2>
 
       {hasNoCampaigns ? (
         <Card className="gradient-card border-border/20 shadow-card">
@@ -126,6 +193,7 @@ const Campaigns = () => {
           ))}
         </div>
       )}
+      </div>
       <NewCampaignDialog open={isDialogOpen} onOpenChange={setIsDialogOpen} onCreated={handleCreated} />
     </div>
   );
