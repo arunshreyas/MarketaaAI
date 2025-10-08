@@ -159,10 +159,14 @@ const Campaigns = () => {
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {campaigns.map((campaign) => (
-            <Card key={campaign.id} className="gradient-card border-border/20 hover:border-electric/20 transition-smooth cursor-pointer shadow-card hover:shadow-elegant">
+            <Card
+              key={campaign.id}
+              onClick={() => navigate(`/dashboard/campaigns/${campaign.id}`)}
+              className="gradient-card border-border/20 hover:border-electric/20 transition-smooth cursor-pointer shadow-card hover:shadow-elegant group"
+            >
               <CardHeader>
                 <div className="flex items-center justify-between">
-                  <CardTitle className="text-foreground">{campaign.name}</CardTitle>
+                  <CardTitle className="text-foreground group-hover:text-electric transition-colors">{campaign.name}</CardTitle>
                   <span className={`px-3 py-1 rounded-full text-xs font-medium ${
                     campaign.status?.toLowerCase() === 'active'
                       ? 'bg-green-500/10 text-green-400'

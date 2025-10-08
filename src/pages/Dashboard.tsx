@@ -4,6 +4,7 @@ import { AppSidebar } from "@/components/dashboard/AppSidebar";
 import { DashboardHeader } from "@/components/dashboard/DashboardHeader";
 import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import Campaigns from "./Campaigns";
+import CampaignDetail from "./CampaignDetail";
 import Assistant from "./Assistant";
 
 const Dashboard = () => {
@@ -18,6 +19,7 @@ const Dashboard = () => {
               <Route path="/" element={<DashboardContent />} />
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/campaigns" element={<Campaigns />} />
+              <Route path="/campaigns/:id" element={<CampaignDetail />} />
             </Routes>
           </main>
         </div>
