@@ -1,12 +1,12 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Sparkles, Play } from "lucide-react";
+import { ArrowRight, Sparkles } from "lucide-react";
 import { useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "@/hooks/use-toast";
+import heroImage from "@/assets/hero-marketa.jpg";
 import { SplitText, FadeInOnScroll, AnimatedContent } from "@/components/animations";
 import DarkVeil from "@/components/backgrounds/DarkVeil";
-
 const Hero = () => {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -40,7 +40,7 @@ const Hero = () => {
     }
   };
   return <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-deep-bg pt-24">
-      <DarkVeil className="absolute inset-0 z-0 opacity-60" />
+      <DarkVeil className="absolute inset-0 z-0" />
       
       {/* Enhanced Floating Elements */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
@@ -65,14 +65,14 @@ const Hero = () => {
       </div>
 
       {/* Background Mesh */}
-      <div className="absolute inset-0 gradient-mesh opacity-10 pointer-events-none" />
+      <div className="absolute inset-0 gradient-mesh opacity-20 pointer-events-none" />
       {/* Content */}
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           {/* Main Heading */}
           <div className="mb-0">
             <SplitText text="Transform Your" tag="h1" className="text-6xl md:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={0.4} />
-            <FadeInOnScroll direction="up" delay={0.6} duration={0.8}>
+            <FadeInOnScroll direction="up" delay={0.8} duration={1}>
               <span className="text-gradient block text-6xl md:text-8xl font-bold font-heading leading-relaxed tracking-tight">
                 Digital Marketing
               </span>
@@ -80,15 +80,21 @@ const Hero = () => {
             <SplitText text="with AI" tag="span" className="text-6xl md:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={1.2} />
           </div>
 
-          {/* Subheading */}
-          <FadeInOnScroll direction="up" delay={1.4} duration={0.8}>
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electric/10 border border-electric/20 mb-8 mt-8">
-              <Sparkles className="w-4 h-4 text-electric" />
-              <span className="text-sm font-medium text-electric">AI Marketing Partner</span>
+          {/* Enhanced Badge */}
+          <FadeInOnScroll direction="down" delay={1.4}>
+            <div className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl glass-card border border-electric/40 mb-8 mt-8 glow-electric-subtle hover-lift group transition-all duration-500">
+              <div className="w-2 h-2 bg-electric rounded-full animate-pulse"></div>
+              <Sparkles className="w-5 h-5 text-electric group-hover:scale-110 transition-transform" />
+              <span className="text-sm font-bold text-electric tracking-wide">Your AI Marketing Partner</span>
+              <div className="w-2 h-2 bg-electric-glow rounded-full animate-pulse" style={{
+              animationDelay: '1s'
+            }}></div>
             </div>
           </FadeInOnScroll>
-          <FadeInOnScroll direction="up" delay={1.6} duration={0.8}>
-            <p className="text-lg md:text-xl text-muted-foreground/80 mb-12 max-w-3xl mx-auto leading-relaxed font-light">
+
+          {/* Subheading */}
+          <FadeInOnScroll direction="up" delay={1.6} duration={1}>
+            <p className="text-xl md:text-2xl text-muted-foreground/90 mb-12 max-w-4xl mx-auto leading-relaxed mt-8 font-light">
               Marketa AI learns your business, crafts campaigns that resonate, and delivers results 
               without the complexity. <span className="text-foreground font-medium">Your brand's creative spark, strategist, and growth engine</span>—all in one.
             </p>
@@ -96,32 +102,38 @@ const Hero = () => {
 
           {/* CTA Buttons */}
           <AnimatedContent direction="vertical" delay={2} stagger={0.2}>
-            <div className="space-y-8">
+            <div className="space-y-10">
               {/* Waitlist Form */}
-              <div className="max-w-md mx-auto">
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 mb-4">
-                    <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                    <span className="text-sm font-medium text-green-400">Launching Q1 2025</span>
+              <div className="max-w-lg mx-auto">
+                <div className="text-center mb-6">
+                  <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl glass-card border border-electric/40 mb-8 pulse-glow group">
+                    <div className="w-2 h-2 bg-electric rounded-full animate-pulse"></div>
+                    <Sparkles className="w-4 h-4 text-electric group-hover:rotate-12 transition-transform" />
+                    <span className="text-sm font-bold text-electric tracking-wide">Launching Q1 2025</span>
+                    <div className="w-2 h-2 bg-electric-glow rounded-full animate-pulse" style={{
+                    animationDelay: '0.5s'
+                  }}></div>
                   </div>
-                  <p className="text-muted-foreground text-base">
-                    Join the waitlist for early access
+                  <p className="text-muted-foreground/80 text-xl font-light">
+                    Join our waitlist to be first in line for early access
                   </p>
                 </div>
-                <form onSubmit={handleWaitlistSubmit} className="flex gap-3">
-                  <Input 
-                    type="email" 
-                    placeholder="Enter your email" 
-                    value={email} 
-                    onChange={e => setEmail(e.target.value)} 
-                    required 
-                    className="flex-1 h-12 bg-surface/50 border-border/30 focus:border-electric/50 rounded-lg" 
-                    disabled={isSubmitting} 
-                  />
-                  <Button type="submit" className="gradient-electric h-12 px-6 rounded-lg font-medium" disabled={isSubmitting}>
-                    {isSubmitting ? "Joining..." : "Join Waitlist"}
+                <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-4">
+                  <Input type="email" placeholder="Enter your email address" value={email} onChange={e => setEmail(e.target.value)} required className="flex-1 h-14 input-modern text-lg focus-ring" disabled={isSubmitting} />
+                  <Button type="submit" size="lg" className="btn-modern gradient-electric glow-electric group h-14 px-10 text-lg font-bold relative overflow-hidden" disabled={isSubmitting}>
+                    <span className="relative z-10">{isSubmitting ? "Joining..." : "Join Waitlist"}</span>
+                    <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-spring relative z-10" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
                   </Button>
                 </form>
+              </div>
+              
+              {/* Demo Button */}
+              <div className="flex justify-center">
+                <Button variant="outline" size="lg" className="btn-modern text-lg px-10 py-4 border-electric/40 hover:border-electric/80 hover:bg-electric/15 hover-lift glass-card group relative overflow-hidden">
+                  <span className="relative z-10">Try Demo</span>
+                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-electric/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
+                </Button>
               </div>
             </div>
           </AnimatedContent>

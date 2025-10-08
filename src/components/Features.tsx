@@ -67,58 +67,7 @@ const Features = () => {
         {/* Section Header */}
         <FadeInOnScroll direction="up">
           <div className="text-center mb-16">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-electric/10 border border-electric/20 mb-8">
-              <Sparkles className="w-4 h-4 text-electric" />
-              <span className="text-sm font-medium text-electric">Features</span>
-            </div>
-            <h2 className="text-4xl md:text-5xl font-bold font-heading mb-6 tracking-tight">
-              Everything You Need for
-            </h2>
-            <span className="text-gradient block text-4xl md:text-5xl font-bold font-heading leading-tight tracking-tight mb-8">
-              Digital Marketing Success
-            </span>
-            <p className="text-lg text-muted-foreground/80 max-w-3xl mx-auto leading-relaxed">
-              From AI-driven campaign creation to real-time optimization, 
-              Marketa AI provides all the tools you need to succeed.
-            </p>
-          </div>
-        </FadeInOnScroll>
-
-        {/* Features Grid */}
-        <AnimatedContent direction="vertical" stagger={0.1}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
-              <Card 
-                key={index} 
-                className="bg-card/50 border-border/30 hover:border-electric/30 transition-all duration-300 hover:bg-card/80 group"
-              >
-                <CardHeader className="pb-4">
-                  <div className="flex items-center justify-between mb-4">
-                    <div className="p-3 rounded-xl bg-electric/10 group-hover:bg-electric/20 transition-colors">
-                      <feature.icon className="w-6 h-6 text-electric" />
-                    </div>
-                    <Badge variant="secondary" className="text-xs px-2 py-1 bg-surface/50 border-border/30">
-                      {feature.badge}
-                    </Badge>
-                  </div>
-                  <CardTitle className="text-lg font-semibold group-hover:text-electric transition-colors">
-                    {feature.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <CardDescription className="text-muted-foreground/80 leading-relaxed">
-                    {feature.description}
-                  </CardDescription>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </AnimatedContent>
-
-        {/* Section Header */}
-        <FadeInOnScroll direction="up">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-8 px-6 py-3 text-sm font-bold rounded-full border-electric/30 text-electric bg-electric/5 hover:bg-electric/10 transition-all">
+            <Badge className="mb-6 gradient-electric text-primary-foreground px-4 py-2 text-sm font-semibold rounded-full">
               Powerful Features
             </Badge>
             <SplitText 

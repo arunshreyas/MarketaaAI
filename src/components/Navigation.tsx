@@ -6,29 +6,40 @@ import { Link } from "react-router-dom";
 
 const Navigation = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const { user, signOut } = useAuth();
+  
+  // Make auth optional for landing page
+  let user = null;
+  let signOut = async () => {};
+  
+  try {
+    const auth = useAuth();
+    user = auth.user;
+    signOut = auth.signOut;
+  } catch {
+    // Auth not available on this page
+  }
 
   return (
-    <nav className="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-card/80 backdrop-blur-sm border border-border/30 rounded-xl shadow-lg w-[calc(100%-2rem)] max-w-5xl">
-      <div className="container mx-auto px-4 py-3">
+    <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-2xl shadow-floating w-[calc(100%-2rem)] max-w-6xl">
+      <div className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="font-heading text-xl font-semibold text-gradient flex items-center space-x-2">
-            <div className="w-7 h-7 rounded-lg bg-electric/10 flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-electric" />
+          <div className="font-heading text-2xl font-bold text-gradient flex items-center space-x-2">
+            <div className="w-8 h-8 rounded-lg gradient-electric glow-electric-subtle flex items-center justify-center">
+              <Sparkles className="w-4 h-4 text-white" />
             </div>
             Marketa AI
           </div>
 
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-6">
-            <a href="#features" className="text-foreground/70 hover:text-electric transition-colors text-sm font-medium">
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#features" className="text-foreground/70 hover:text-electric transition-spring font-medium">
               Features
             </a>
-            <a href="#about" className="text-foreground/70 hover:text-electric transition-colors text-sm font-medium">
+            <a href="#about" className="text-foreground/70 hover:text-electric transition-spring font-medium">
               About
             </a>
-            <a href="#pricing" className="text-foreground/70 hover:text-electric transition-colors text-sm font-medium">
+            <a href="#pricing" className="text-foreground/70 hover:text-electric transition-spring font-medium">
               Pricing
             </a>
           </div>
@@ -44,7 +55,7 @@ const Navigation = () => {
                   variant="outline" 
                   size="sm"
                   onClick={signOut}
-                  className="flex items-center space-x-2 border-border/30 hover:border-electric/30 text-sm"
+                  className="flex items-center space-x-2 hover-lift border-border/30 hover:border-electric/30"
                 >
                   <LogOut className="w-4 h-4" />
                   <span>Sign Out</span>
@@ -53,12 +64,12 @@ const Navigation = () => {
             ) : (
               <>
                 <Link to="/auth">
-                  <Button variant="ghost" size="sm" className="hover:text-electric text-sm">
+                  <Button variant="ghost" size="sm" className="hover:text-electric transition-spring">
                     Sign In
                   </Button>
                 </Link>
                 <Link to="/auth">
-                  <Button size="sm" className="gradient-electric text-primary-foreground text-sm">
+                  <Button variant="electric" size="sm" className="btn-modern glow-electric-subtle hover-lift">
                     Get Started
                   </Button>
                 </Link>
@@ -77,28 +88,28 @@ const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMenuOpen && (
-          <div className="md:hidden mt-3 pb-3 border-t border-border/30">
+          <div className="md:hidden mt-4 pb-4 border-t border-border">
             <div className="flex flex-col space-y-4 p-4">
-              <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors text-sm">
+              <a href="#features" className="text-foreground/80 hover:text-foreground transition-colors">
                 Features
               </a>
-              <a href="#about" className="text-foreground/80 hover:text-foreground transition-colors text-sm">
+              <a href="#about" className="text-foreground/80 hover:text-foreground transition-colors">
                 About
               </a>
-              <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-colors text-sm">
+              <a href="#pricing" className="text-foreground/80 hover:text-foreground transition-colors">
                 Pricing
               </a>
-              <div className="flex flex-col space-y-2 pt-3 border-t border-border/30">
+              <div className="flex flex-col space-y-2 pt-4 border-t border-border/20">
                 {user ? (
                   <div className="flex flex-col space-y-2">
-                    <span className="text-xs text-foreground/80 px-3">
+                    <span className="text-sm text-foreground/80 px-3">
                       {user.email}
                     </span>
                     <Button 
                       variant="ghost" 
                       size="sm"
                       onClick={signOut}
-                      className="flex items-center space-x-2 justify-start text-sm"
+                      className="flex items-center space-x-2 justify-start"
                     >
                       <LogOut className="w-4 h-4" />
                       <span>Sign Out</span>
@@ -107,12 +118,12 @@ const Navigation = () => {
                 ) : (
                   <>
                     <Link to="/auth">
-                      <Button variant="ghost" size="sm" className="w-full text-sm">
+                      <Button variant="ghost" size="sm" className="w-full">
                         Sign In
                       </Button>
                     </Link>
                     <Link to="/auth">
-                      <Button size="sm" className="w-full gradient-electric text-primary-foreground text-sm">
+                      <Button variant="electric" size="sm" className="w-full">
                         Get Started
                       </Button>
                     </Link>
