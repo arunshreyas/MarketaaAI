@@ -15,7 +15,7 @@ const Pricing = () => {
       name: "Starter",
       price: "$29",
       period: "/month",
-      description: "Perfect for small businesses - available when we launch",
+      description: "Perfect for small businesses getting started with AI marketing",
       icon: Zap,
       features: [
         "Up to 10 campaigns per month",
@@ -32,7 +32,7 @@ const Pricing = () => {
       name: "Professional",
       price: "$79",
       period: "/month",
-      description: "Ideal for growing businesses - available when we launch",
+      description: "Ideal for growing businesses that need advanced features",
       icon: Rocket,
       features: [
         "Up to 50 campaigns per month",
@@ -51,7 +51,7 @@ const Pricing = () => {
       name: "Enterprise",
       price: "Custom",
       period: "",
-      description: "For large organizations - available when we launch",
+      description: "For large organizations with complex marketing needs",
       icon: Crown,
       features: [
         "Unlimited campaigns",
@@ -83,8 +83,8 @@ const Pricing = () => {
             </span>
           </h2>
           <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
-            When we launch, choose the plan that scales with your business.
-            All plans will include our core AI features with no setup fees.
+            Start with our free trial, then choose the plan that scales with your business. 
+            All plans include our core AI features with no setup fees.
           </p>
         </div>
 
@@ -158,7 +158,7 @@ const Pricing = () => {
         {/* Bottom CTA */}
         <div className="text-center mt-16">
           <p className="text-muted-foreground mb-6">
-            Interested in a custom solution? Join our waitlist and let us know your needs.
+            Need a custom solution? We'd love to hear from you.
           </p>
           <Button variant="outline" className="border-electric/30 hover:border-electric/60 hover:bg-electric/10">
             Contact Sales
