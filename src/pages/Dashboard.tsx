@@ -6,6 +6,7 @@ import { DashboardContent } from "@/components/dashboard/DashboardContent";
 import Campaigns from "./Campaigns";
 import CampaignDetail from "./CampaignDetail";
 import Assistant from "./Assistant";
+import Settings from "./Settings";
 
 const Dashboard = () => {
   return (
@@ -20,6 +21,7 @@ const Dashboard = () => {
               <Route path="/assistant" element={<Assistant />} />
               <Route path="/campaigns" element={<Campaigns />} />
               <Route path="/campaigns/:id" element={<CampaignDetail />} />
+              <Route path="/settings" element={<Settings />} />
             </Routes>
           </main>
         </div>
