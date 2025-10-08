@@ -27,10 +27,27 @@ const Campaigns = () => {
     if (!user) return;
     setIsLoading(true);
     
-    // TODO: Implement campaigns table when database is set up
-    setCampaigns([]);
-    
-    setIsLoading(false);
+    try {
+      const { data, error } = await supabase
+        .from("Campaigns")
+        .select("*")
+        .order("created_at", { ascending: false });
+
+      if (error) {
+        console.error("Error loading campaigns:", error);
+        toast({
+          title: "Error",
+          description: "Failed to load campaigns",
+          variant: "destructive",
+        });
+      } else {
+        setCampaigns(data || []);
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   useEffect(() => {

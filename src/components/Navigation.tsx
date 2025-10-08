@@ -48,9 +48,15 @@ const Navigation = () => {
           <div className="hidden md:flex items-center space-x-4">
             {user ? (
               <div className="flex items-center space-x-3">
-                <span className="text-sm text-foreground/70 font-medium">
-                  {user.email}
-                </span>
+                <Link to="/dashboard">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="flex items-center space-x-2 hover-lift border-border/30 hover:border-electric/30"
+                  >
+                    Dashboard
+                  </Button>
+                </Link>
                 <Button 
                   variant="outline" 
                   size="sm"
@@ -102,9 +108,15 @@ const Navigation = () => {
               <div className="flex flex-col space-y-2 pt-4 border-t border-border/20">
                 {user ? (
                   <div className="flex flex-col space-y-2">
-                    <span className="text-sm text-foreground/80 px-3">
-                      {user.email}
-                    </span>
+                    <Link to="/dashboard">
+                      <Button 
+                        variant="outline" 
+                        size="sm"
+                        className="w-full"
+                      >
+                        Dashboard
+                      </Button>
+                    </Link>
                     <Button 
                       variant="ghost" 
                       size="sm"

@@ -14,8 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      Campaigns: {
+        Row: {
+          archived: boolean
+          audience: Json
+          budget_daily: number | null
+          budget_total: number | null
+          channels: Json
+          created_at: string
+          creatives: Json
+          end_at: string | null
+          id: number
+          latest_ai_recommendation: string | null
+          metrics: Json
+          name: string
+          objective: Database["public"]["Enums"]["campaign_objective"]
+          start_at: string | null
+          status: Database["public"]["Enums"]["campaign_status"]
+          strategy_prompt: string | null
+          tags: string[]
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          archived?: boolean
+          audience?: Json
+          budget_daily?: number | null
+          budget_total?: number | null
+          channels?: Json
+          created_at?: string
+          creatives?: Json
+          end_at?: string | null
+          id?: number
+          latest_ai_recommendation?: string | null
+          metrics?: Json
+          name: string
+          objective?: Database["public"]["Enums"]["campaign_objective"]
+          start_at?: string | null
+          status?: Database["public"]["Enums"]["campaign_status"]
+          strategy_prompt?: string | null
+          tags?: string[]
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          archived?: boolean
+          audience?: Json
+          budget_daily?: number | null
+          budget_total?: number | null
+          channels?: Json
+          created_at?: string
+          creatives?: Json
+          end_at?: string | null
+          id?: number
+          latest_ai_recommendation?: string | null
+          metrics?: Json
+          name?: string
+          objective?: Database["public"]["Enums"]["campaign_objective"]
+          start_at?: string | null
+          status?: Database["public"]["Enums"]["campaign_status"]
+          strategy_prompt?: string | null
+          tags?: string[]
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       Conversations: {
         Row: {
+          campaign_id: number | null
           created_at: string
           embedding: string | null
           id: number
@@ -24,6 +91,7 @@ export type Database = {
           user_id: string
         }
         Insert: {
+          campaign_id?: number | null
           created_at?: string
           embedding?: string | null
           id?: number
@@ -32,6 +100,7 @@ export type Database = {
           user_id: string
         }
         Update: {
+          campaign_id?: number | null
           created_at?: string
           embedding?: string | null
           id?: number
@@ -39,7 +108,15 @@ export type Database = {
           Response?: string | null
           user_id?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "Conversations_campaign_id_fkey"
+            columns: ["campaign_id"]
+            isOneToOne: false
+            referencedRelation: "Campaigns"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       Emails: {
         Row: {
@@ -170,7 +247,14 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      campaign_objective:
+        | "awareness"
+        | "traffic"
+        | "leads"
+        | "sales"
+        | "retention"
+        | "custom"
+      campaign_status: "draft" | "active" | "paused" | "completed" | "archived"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -297,6 +381,16 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      campaign_objective: [
+        "awareness",
+        "traffic",
+        "leads",
+        "sales",
+        "retention",
+        "custom",
+      ],
+      campaign_status: ["draft", "active", "paused", "completed", "archived"],
+    },
   },
 } as const

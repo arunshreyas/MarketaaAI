@@ -32,8 +32,8 @@ const NewCampaignDialog = ({ open, onOpenChange, onCreated }: Props) => {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [name, setName] = useState("");
-  const [objective, setObjective] = useState<string>("awareness");
-  const [status, setStatus] = useState<string>("draft");
+  const [objective, setObjective] = useState("awareness");
+  const [status, setStatus] = useState("draft");
   const [budgetTotal, setBudgetTotal] = useState<string>("");
   const [channels, setChannels] = useState<string[]>([]);
   const [notes, setNotes] = useState("");
@@ -59,12 +59,45 @@ const NewCampaignDialog = ({ open, onOpenChange, onCreated }: Props) => {
     }
     setIsSubmitting(true);
     
-    // TODO: Implement campaigns table when database is set up
-    toast({ title: "Campaign feature coming soon!", description: "Database setup required for campaigns." });
-    reset();
-    onOpenChange(false);
-    
-    setIsSubmitting(false);
+    try {
+      const { data, error } = await supabase
+        .from("Campaigns")
+        .insert([
+          {
+            name: name.trim(),
+            objective: objective as any,
+            status: status as any,
+            budget_total: budgetTotal ? parseFloat(budgetTotal) : null,
+            channels: channels,
+            strategy_prompt: notes.trim() || null,
+            user_id: user.id,
+          },
+        ])
+        .select()
+        .single();
+
+      if (error) throw error;
+
+      toast({
+        title: "Success",
+        description: "Campaign created successfully",
+      });
+
+      reset();
+      onOpenChange(false);
+      if (onCreated && data) {
+        onCreated(data.id);
+      }
+    } catch (error: any) {
+      console.error("Error creating campaign:", error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to create campaign",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (

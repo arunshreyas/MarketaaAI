@@ -8,6 +8,13 @@ import { Send, Bot, User, Sparkles, MessageSquare } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/use-toast";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 interface Message {
   id: string;
@@ -16,25 +23,84 @@ interface Message {
   timestamp: Date;
 }
 
+interface Campaign {
+  id: number;
+  name: string;
+}
+
 const Assistant = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingHistory, setIsLoadingHistory] = useState(false);
+  const [campaigns, setCampaigns] = useState<Campaign[]>([]);
+  const [selectedCampaignId, setSelectedCampaignId] = useState<string>("");
   const scrollAreaRef = useRef<HTMLDivElement | null>(null);
   const { user } = useAuth();
   const { toast } = useToast();
 
-  // track the last inserted conversation row id for polling
-  const lastInsertedIdRef = useRef<number | null>(null);
+  // Load campaigns
   useEffect(() => {
-    // no-op: maintained for symmetry with previous effect
-  }, []);
+    if (!user) return;
+    
+    const loadCampaigns = async () => {
+      const { data, error } = await supabase
+        .from("Campaigns")
+        .select("id, name")
+        .order("created_at", { ascending: false });
 
-  // Auto-scroll to bottom when messages update
+      if (error) {
+        console.error("Error loading campaigns:", error);
+      } else {
+        setCampaigns(data || []);
+      }
+    };
+
+    loadCampaigns();
+  }, [user]);
+
+  // Load conversation history when campaign is selected
+  useEffect(() => {
+    if (!selectedCampaignId || !user) return;
+
+    const loadConversation = async () => {
+      const { data, error } = await supabase
+        .from("Conversations")
+        .select("*")
+        .eq("campaign_id", parseInt(selectedCampaignId))
+        .order("created_at", { ascending: true });
+
+      if (error) {
+        console.error("Error loading conversation:", error);
+      } else if (data) {
+        const loadedMessages: Message[] = [];
+        data.forEach((conv) => {
+          if (conv.Prompt) {
+            loadedMessages.push({
+              id: `prompt-${conv.id}`,
+              content: conv.Prompt,
+              isUser: true,
+              timestamp: new Date(conv.created_at),
+            });
+          }
+          if (conv.Response) {
+            loadedMessages.push({
+              id: `response-${conv.id}`,
+              content: conv.Response,
+              isUser: false,
+              timestamp: new Date(conv.created_at),
+            });
+          }
+        });
+        setMessages(loadedMessages);
+      }
+    };
+
+    loadConversation();
+  }, [selectedCampaignId, user]);
+
+  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollAreaRef.current) {
-      // Slight delay to ensure DOM update
       setTimeout(() => {
         if (scrollAreaRef.current) {
           scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
@@ -43,110 +109,139 @@ const Assistant = () => {
     }
   }, [messages]);
 
-  // No automatic loading of history per your request
-  useEffect(() => {
-    // intentionally empty
-  }, [user]);
-
-  const scrollToBottom = () => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
-    }
-  };
-
   const handleSendMessage = async () => {
-    if (!inputMessage.trim() || !user || isLoading) return;
+    if (!inputMessage.trim() || !user || isLoading || !selectedCampaignId) return;
 
     const userMessage = inputMessage.trim();
     setInputMessage("");
     setIsLoading(true);
 
-    // Push user message to UI immediately
     const userMessageObj: Message = {
       id: `user-${Date.now()}`,
       content: userMessage,
       isUser: true,
       timestamp: new Date(),
     };
-    setMessages(prev => [...prev, userMessageObj]);
-    scrollToBottom();
+    setMessages((prev) => [...prev, userMessageObj]);
 
     try {
-      const user_id = user.id;
+      const conversationHistory = messages.map((msg) => ({
+        role: msg.isUser ? "user" : "assistant",
+        content: msg.content,
+      }));
 
-      // Insert the prompt into Conversations table and get new row id
-      const { data: insertData, error: insertError } = await supabase
-        .from("Conversations")
-        .insert([{ Prompt: userMessage, user_id }])
-        .select("id")
-        .single();
+      conversationHistory.push({ role: "user", content: userMessage });
 
-      if (insertError) throw insertError;
+      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
+      
+      const response = await fetch(CHAT_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY}`,
+        },
+        body: JSON.stringify({
+          messages: conversationHistory,
+          campaignId: parseInt(selectedCampaignId),
+        }),
+      });
 
-      const insertedId = insertData?.id;
-      if (!insertedId) throw new Error("Failed to retrieve inserted conversation id");
-      lastInsertedIdRef.current = insertedId;
-
-      // Poll for response (n8n will write Response into the same table)
-      const maxTries = 30; // 30 * 2s = up to ~60s wait
-      const delay = 2000;
-      let tries = 0;
-
-      while (tries < maxTries) {
-        const { data: promptRow, error: fetchError } = await supabase
-          .from("Conversations")
-          .select("id, Response")
-          .eq("id", insertedId)
-          .maybeSingle();
-
-        if (fetchError) throw fetchError;
-
-        if (promptRow?.Response) {
-          const aiMessageObj: Message = {
-            id: `ai-${Date.now()}`,
-            content: promptRow.Response,
-            isUser: false,
-            timestamp: new Date(),
-          };
-          setMessages(prev => [...prev, aiMessageObj]);
-          setIsLoading(false);
-          scrollToBottom();
-          return;
+      if (!response.ok || !response.body) {
+        if (response.status === 429) {
+          throw new Error("Rate limit exceeded. Please try again later.");
         }
-
-        await new Promise(resolve => setTimeout(resolve, delay));
-        tries++;
+        if (response.status === 402) {
+          throw new Error("Payment required. Please add credits to your workspace.");
+        }
+        throw new Error("Failed to get AI response");
       }
 
-      // Timeout fallback
-      setMessages(prev => [
+      // Stream the response
+      const reader = response.body.getReader();
+      const decoder = new TextDecoder();
+      let assistantResponse = "";
+      let textBuffer = "";
+      let streamDone = false;
+
+      // Add placeholder for assistant message
+      const assistantMessageId = `assistant-${Date.now()}`;
+      setMessages((prev) => [
         ...prev,
         {
-          id: `ai-timeout-${Date.now()}`,
-          content: "⏳ AI is still thinking... Try again later.",
+          id: assistantMessageId,
+          content: "",
           isUser: false,
           timestamp: new Date(),
+        },
+      ]);
+
+      while (!streamDone) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        textBuffer += decoder.decode(value, { stream: true });
+
+        let newlineIndex: number;
+        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
+          let line = textBuffer.slice(0, newlineIndex);
+          textBuffer = textBuffer.slice(newlineIndex + 1);
+
+          if (line.endsWith("\r")) line = line.slice(0, -1);
+          if (line.startsWith(":") || line.trim() === "") continue;
+          if (!line.startsWith("data: ")) continue;
+
+          const jsonStr = line.slice(6).trim();
+          if (jsonStr === "[DONE]") {
+            streamDone = true;
+            break;
+          }
+
+          try {
+            const parsed = JSON.parse(jsonStr);
+            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
+            if (content) {
+              assistantResponse += content;
+              setMessages((prev) =>
+                prev.map((msg) =>
+                  msg.id === assistantMessageId
+                    ? { ...msg, content: assistantResponse }
+                    : msg
+                )
+              );
+            }
+          } catch {
+            textBuffer = line + "\n" + textBuffer;
+            break;
+          }
+        }
+      }
+
+      // Save to database
+      await supabase.from("Conversations").insert([
+        {
+          Prompt: userMessage,
+          Response: assistantResponse,
+          user_id: user.id,
+          campaign_id: parseInt(selectedCampaignId),
         },
       ]);
     } catch (error: any) {
       console.error("Error sending message:", error);
       toast({
         title: "Error",
-        description: "Failed to send message. Please try again.",
+        description: error.message || "Failed to send message",
         variant: "destructive",
       });
-      setMessages(prev => [
+      setMessages((prev) => [
         ...prev,
         {
-          id: `ai-error-${Date.now()}`,
-          content: `❌ Error sending message: ${error?.message ?? error}`,
+          id: `error-${Date.now()}`,
+          content: `❌ ${error.message}`,
           isUser: false,
           timestamp: new Date(),
         },
       ]);
     } finally {
       setIsLoading(false);
-      scrollToBottom();
     }
   };
 
@@ -157,13 +252,26 @@ const Assistant = () => {
     }
   };
 
-  if (isLoadingHistory) {
+  if (campaigns.length === 0) {
     return (
-      <div className="flex items-center justify-center h-full">
-        <div className="flex items-center space-x-2">
-          <div className="w-6 h-6 border-2 border-electric/30 border-t-electric rounded-full animate-spin" />
-          <span className="text-muted-foreground">Loading conversation...</span>
-        </div>
+      <div className="h-full flex items-center justify-center">
+        <Card className="max-w-md mx-auto gradient-card border-electric/20">
+          <CardContent className="p-8 text-center space-y-4">
+            <div className="gradient-electric p-4 rounded-full glow-electric inline-block">
+              <Sparkles className="h-12 w-12 text-primary-foreground" />
+            </div>
+            <h3 className="text-xl font-semibold text-foreground">Create a Campaign First</h3>
+            <p className="text-muted-foreground">
+              You need to create a campaign before you can use the AI assistant.
+            </p>
+            <Button
+              onClick={() => (window.location.href = "/dashboard/campaigns")}
+              className="gradient-electric glow-electric text-primary-foreground"
+            >
+              Go to Campaigns
+            </Button>
+          </CardContent>
+        </Card>
       </div>
     );
   }
@@ -172,21 +280,37 @@ const Assistant = () => {
     <div className="h-full flex flex-col">
       {/* Header */}
       <div className="border-b border-border/20 bg-card/50 backdrop-blur-xl p-6">
-        <div className="flex items-center space-x-3">
-          <div className="gradient-electric p-3 rounded-lg glow-electric">
-            <Bot className="h-6 w-6 text-primary-foreground" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <div className="gradient-electric p-3 rounded-lg glow-electric">
+              <Bot className="h-6 w-6 text-primary-foreground" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground">AI Marketing Assistant</h1>
+              <p className="text-muted-foreground">
+                Get personalized marketing insights for your campaign
+              </p>
+            </div>
           </div>
-          <div>
-            <h1 className="text-2xl font-bold text-foreground">AI Marketing Assistant</h1>
-            <p className="text-muted-foreground">Get personalized marketing insights and strategies</p>
-          </div>
+          <Select value={selectedCampaignId} onValueChange={setSelectedCampaignId}>
+            <SelectTrigger className="w-64 bg-surface border-border/40">
+              <SelectValue placeholder="Select a campaign" />
+            </SelectTrigger>
+            <SelectContent className="bg-card border-border/20">
+              {campaigns.map((campaign) => (
+                <SelectItem key={campaign.id} value={campaign.id.toString()}>
+                  {campaign.name}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
       {/* Chat Area */}
       <div className="flex-1 flex flex-col min-h-0">
         <ScrollArea className="flex-1 p-6" ref={scrollAreaRef}>
-          {messages.length === 0 ? (
+          {messages.length === 0 && selectedCampaignId ? (
             <div className="flex flex-col items-center justify-center h-full text-center space-y-4">
               <div className="gradient-electric p-4 rounded-full glow-electric">
                 <MessageSquare className="h-12 w-12 text-primary-foreground" />
@@ -194,44 +318,14 @@ const Assistant = () => {
               <div className="space-y-2">
                 <h3 className="text-xl font-semibold text-foreground">Start a conversation</h3>
                 <p className="text-muted-foreground max-w-md">
-                  Ask me anything about marketing strategies, campaign optimization,
-                  audience targeting, or any other marketing-related questions.
+                  Ask me anything about your marketing campaign, strategies, audience targeting,
+                  or optimization tips.
                 </p>
               </div>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6 max-w-2xl">
-                <Button
-                  variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
-                  onClick={() => setInputMessage("How can I improve my email marketing campaigns?")}
-                >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>How can I improve my email marketing campaigns?</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
-                  onClick={() => setInputMessage("What's the best way to target my audience on social media?")}
-                >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>What's the best way to target my audience on social media?</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
-                  onClick={() => setInputMessage("How do I measure the ROI of my marketing campaigns?")}
-                >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>How do I measure the ROI of my marketing campaigns?</span>
-                </Button>
-                <Button
-                  variant="outline"
-                  className="text-left justify-start h-auto p-4 border-electric/20 hover:border-electric/40"
-                  onClick={() => setInputMessage("What are the latest digital marketing trends?")}
-                >
-                  <Sparkles className="h-4 w-4 mr-2 text-electric" />
-                  <span>What are the latest digital marketing trends?</span>
-                </Button>
-              </div>
+            </div>
+          ) : !selectedCampaignId ? (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-muted-foreground">Select a campaign to start chatting</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -242,7 +336,9 @@ const Assistant = () => {
                     message.isUser ? "flex-row-reverse space-x-reverse" : ""
                   }`}
                 >
-                  <Avatar className={`w-8 h-8 ${message.isUser ? "bg-electric/10" : "bg-surface"}`}>
+                  <Avatar
+                    className={`w-8 h-8 ${message.isUser ? "bg-electric/10" : "bg-surface"}`}
+                  >
                     <AvatarFallback>
                       {message.isUser ? (
                         <User className="h-4 w-4 text-electric" />
@@ -253,14 +349,22 @@ const Assistant = () => {
                   </Avatar>
                   <Card
                     className={`max-w-[80%] ${
-                      message.isUser ? "gradient-electric text-primary-foreground" : "gradient-card border-border/20"
+                      message.isUser
+                        ? "gradient-electric text-primary-foreground"
+                        : "gradient-card border-border/20"
                     }`}
                   >
                     <CardContent className="p-3">
                       <p className="text-sm leading-relaxed whitespace-pre-wrap">
                         {message.content}
                       </p>
-                      <p className={`text-xs mt-2 ${message.isUser ? "text-primary-foreground/70" : "text-muted-foreground"}`}>
+                      <p
+                        className={`text-xs mt-2 ${
+                          message.isUser
+                            ? "text-primary-foreground/70"
+                            : "text-muted-foreground"
+                        }`}
+                      >
                         {message.timestamp.toLocaleTimeString()}
                       </p>
                     </CardContent>
@@ -279,8 +383,14 @@ const Assistant = () => {
                       <div className="flex items-center space-x-2">
                         <div className="flex space-x-1">
                           <div className="w-2 h-2 bg-electric rounded-full animate-bounce" />
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.1s" }} />
-                          <div className="w-2 h-2 bg-electric rounded-full animate-bounce" style={{ animationDelay: "0.2s" }} />
+                          <div
+                            className="w-2 h-2 bg-electric rounded-full animate-bounce"
+                            style={{ animationDelay: "0.1s" }}
+                          />
+                          <div
+                            className="w-2 h-2 bg-electric rounded-full animate-bounce"
+                            style={{ animationDelay: "0.2s" }}
+                          />
                         </div>
                         <span className="text-sm text-muted-foreground">AI is thinking...</span>
                       </div>
@@ -300,14 +410,18 @@ const Assistant = () => {
                 value={inputMessage}
                 onChange={(e) => setInputMessage(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask me anything about marketing..."
-                disabled={isLoading}
+                placeholder={
+                  selectedCampaignId
+                    ? "Ask me anything about your campaign..."
+                    : "Select a campaign first"
+                }
+                disabled={isLoading || !selectedCampaignId}
                 className="min-h-[48px] bg-surface/50 border-border/50 focus:border-electric/50 focus:ring-electric/20 resize-none"
               />
             </div>
             <Button
               onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isLoading}
+              disabled={!inputMessage.trim() || isLoading || !selectedCampaignId}
               className="gradient-electric glow-electric text-primary-foreground h-12 px-6 group"
             >
               <Send className="h-4 w-4 group-hover:translate-x-1 transition-transform" />
