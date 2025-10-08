@@ -8,45 +8,75 @@ import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/integrations/supabase/client";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
-import { Github, Apple, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight } from "lucide-react";
+import { Github, Apple, Eye, EyeOff, Mail, Lock, Sparkles, ArrowRight, User } from "lucide-react";
 import { FadeInOnScroll } from "@/components/animations";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { toast } = useToast();
 
   const handleEmailAuth = async (type: 'signin' | 'signup') => {
-    if (!email || !password) {
-      toast({
-        title: "Error",
-        description: "Please fill in all fields.",
-        variant: "destructive",
-      });
-      return;
+    if (type === 'signup') {
+      if (!email || !password || !username || !firstName || !lastName) {
+        toast({
+          title: "Error",
+          description: "Please fill in all fields.",
+          variant: "destructive",
+        });
+        return;
+      }
+    } else {
+      if (!email || !password) {
+        toast({
+          title: "Error",
+          description: "Please fill in all fields.",
+          variant: "destructive",
+        });
+        return;
+      }
     }
 
     setIsLoading(true);
     try {
       if (type === 'signup') {
         const redirectUrl = `${window.location.origin}/`;
-        const { error } = await supabase.auth.signUp({
+        const { data: authData, error: authError } = await supabase.auth.signUp({
           email,
           password,
           options: {
             emailRedirectTo: redirectUrl
           }
         });
-        
-        if (error) throw error;
-        
+
+        if (authError) throw authError;
+
+        if (authData.user) {
+          const { error: profileError } = await supabase
+            .from('profiles')
+            .insert({
+              id: authData.user.id,
+              username,
+              first_name: firstName,
+              last_name: lastName,
+              email
+            });
+
+          if (profileError) throw profileError;
+        }
+
         toast({
           title: "Success",
-          description: "Please check your email to confirm your account.",
+          description: "Account created successfully!",
         });
+
+        navigate("/dashboard");
       } else {
         const { error } = await supabase.auth.signInWithPassword({
           email,
@@ -209,6 +239,62 @@ const Auth = () => {
               
               <TabsContent value="signup" className="space-y-6">
                 <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-firstname" className="text-sm font-medium text-foreground/90">
+                        First Name
+                      </Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="signup-firstname"
+                          type="text"
+                          value={firstName}
+                          onChange={(e) => setFirstName(e.target.value)}
+                          placeholder="First name"
+                          disabled={isLoading}
+                          className="pl-10 h-12 bg-surface/50 border-border/50 focus:border-electric/50 focus:ring-electric/20 transition-all duration-200"
+                        />
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="signup-lastname" className="text-sm font-medium text-foreground/90">
+                        Last Name
+                      </Label>
+                      <div className="relative">
+                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                        <Input
+                          id="signup-lastname"
+                          type="text"
+                          value={lastName}
+                          onChange={(e) => setLastName(e.target.value)}
+                          placeholder="Last name"
+                          disabled={isLoading}
+                          className="pl-10 h-12 bg-surface/50 border-border/50 focus:border-electric/50 focus:ring-electric/20 transition-all duration-200"
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="signup-username" className="text-sm font-medium text-foreground/90">
+                      Username
+                    </Label>
+                    <div className="relative">
+                      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+                      <Input
+                        id="signup-username"
+                        type="text"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                        placeholder="Choose a username"
+                        disabled={isLoading}
+                        className="pl-10 h-12 bg-surface/50 border-border/50 focus:border-electric/50 focus:ring-electric/20 transition-all duration-200"
+                      />
+                    </div>
+                  </div>
+
                   <div className="space-y-2">
                     <Label htmlFor="signup-email" className="text-sm font-medium text-foreground/90">
                       Email Address
@@ -226,7 +312,7 @@ const Auth = () => {
                       />
                     </div>
                   </div>
-                  
+
                   <div className="space-y-2">
                     <Label htmlFor="signup-password" className="text-sm font-medium text-foreground/90">
                       Password
