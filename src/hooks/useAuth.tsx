@@ -58,6 +58,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             navigate('/dashboard');
           }
         }
+
+        // Handle sign out event
+        if (event === 'SIGNED_OUT') {
+          navigate('/auth');
+        }
       }
     );
 
@@ -73,7 +78,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    navigate('/');
   };
 
   const value = {
