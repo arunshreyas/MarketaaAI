@@ -15,10 +15,12 @@ export function DashboardHeader() {
 
   const handleSignOut = async (e: React.MouseEvent) => {
     e.preventDefault();
+    console.log('handleSignOut clicked');
     try {
       await signOut();
+      console.log('signOut completed');
     } catch (error) {
-      console.error('Sign out error:', error);
+      console.error('Sign out error in handler:', error);
     }
   };
 
