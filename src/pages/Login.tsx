@@ -59,7 +59,7 @@ const Login = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: 'https://marketaa-ai.vercel.app/auth/callback',
         },
       });
       
