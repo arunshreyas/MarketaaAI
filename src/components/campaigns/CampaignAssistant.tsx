@@ -116,13 +116,22 @@ const CampaignAssistant = ({ campaignId, campaignName }: Props) => {
       });
 
       if (!response.ok || !response.body) {
+        const errorText = await response.text().catch(() => "Unknown error");
+        console.error("Edge function error:", response.status, errorText);
+
         if (response.status === 429) {
           throw new Error("Rate limit exceeded. Please try again later.");
         }
         if (response.status === 402) {
           throw new Error("Payment required. Please add credits to your workspace.");
         }
-        throw new Error("Failed to get AI response");
+        if (response.status === 404) {
+          throw new Error("Edge function not found. The chat endpoint may not be deployed.");
+        }
+        if (response.status === 500) {
+          throw new Error(`Server error: ${errorText}`);
+        }
+        throw new Error(`Failed to get AI response (${response.status}): ${errorText}`);
       }
 
       const reader = response.body.getReader();
