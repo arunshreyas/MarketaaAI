@@ -50,7 +50,7 @@ const CampaignDetail = () => {
         const { data, error } = await supabase
           .from("Campaigns")
           .select("*")
-          .eq("id", id)
+          .eq("id", Number(id))
           .maybeSingle();
 
         if (error) throw error;
@@ -64,7 +64,10 @@ const CampaignDetail = () => {
           return;
         }
 
-        setCampaign(data);
+        setCampaign({
+          ...data,
+          channels: Array.isArray(data.channels) ? data.channels : [],
+        } as Campaign);
       } catch (error: any) {
         console.error("Error loading campaign:", error);
         toast({

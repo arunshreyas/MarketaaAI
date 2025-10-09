@@ -78,12 +78,12 @@ const Navigation = () => {
               </div>
             ) : (
               <>
-                <Link to="/auth">
+                <Link to="/login">
                   <Button variant="ghost" size="sm" className="hover:text-electric transition-spring">
                     Sign In
                   </Button>
                 </Link>
-                <Link to="/auth">
+                <Link to="/signup">
                   <Button variant="electric" size="sm" className="btn-modern glow-electric-subtle hover-lift">
                     Get Started
                   </Button>
@@ -138,12 +138,12 @@ const Navigation = () => {
                   </div>
                 ) : (
                   <>
-                    <Link to="/auth">
+                    <Link to="/login">
                       <Button variant="ghost" size="sm" className="w-full">
                         Sign In
                       </Button>
                     </Link>
-                    <Link to="/auth">
+                    <Link to="/signup">
                       <Button variant="electric" size="sm" className="w-full">
                         Get Started
                       </Button>
