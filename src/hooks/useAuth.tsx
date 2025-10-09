@@ -55,17 +55,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
           })();
         }
 
-        // Redirect authenticated users to dashboard or away from auth page
+        // Redirect authenticated users to dashboard or away from auth pages
         if (session?.user) {
-          if (window.location.pathname === '/auth' || window.location.pathname === '/') {
+          if (window.location.pathname === '/login' || window.location.pathname === '/signup' || window.location.pathname === '/') {
             navigate('/dashboard');
           }
         }
 
         // Handle sign out event
         if (event === 'SIGNED_OUT') {
-          console.log('Navigating to /auth after SIGNED_OUT');
-          navigate('/auth');
+          console.log('Navigating to /login after SIGNED_OUT');
+          navigate('/login');
         }
       }
     );
