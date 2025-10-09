@@ -94,52 +94,24 @@ const CampaignAssistant = ({ campaignId, campaignName }: Props) => {
     setMessages((prev) => [...prev, userMessageObj]);
 
     try {
-      const conversationHistory = messages.map((msg) => ({
-        role: msg.isUser ? "user" : "assistant",
-        content: msg.content,
-      }));
+      const { data: conversationData, error: insertError } = await supabase
+        .from("Conversations")
+        .insert([
+          {
+            Prompt: userMessage,
+            Response: null,
+            user_id: user.id,
+            campaign_id: campaignId,
+          },
+        ])
+        .select()
+        .single();
 
-      conversationHistory.push({ role: "user", content: userMessage });
-
-      const CHAT_URL = `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/chat`;
-
-      const response = await fetch(CHAT_URL, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${import.meta.env.VITE_SUPABASE_ANON_KEY}`,
-        },
-        body: JSON.stringify({
-          messages: conversationHistory,
-          campaignId: campaignId,
-        }),
-      });
-
-      if (!response.ok || !response.body) {
-        const errorText = await response.text().catch(() => "Unknown error");
-        console.error("Edge function error:", response.status, errorText);
-
-        if (response.status === 429) {
-          throw new Error("Rate limit exceeded. Please try again later.");
-        }
-        if (response.status === 402) {
-          throw new Error("Payment required. Please add credits to your workspace.");
-        }
-        if (response.status === 404) {
-          throw new Error("Edge function not found. The chat endpoint may not be deployed.");
-        }
-        if (response.status === 500) {
-          throw new Error(`Server error: ${errorText}`);
-        }
-        throw new Error(`Failed to get AI response (${response.status}): ${errorText}`);
+      if (insertError) {
+        throw new Error(`Failed to save prompt: ${insertError.message}`);
       }
 
-      const reader = response.body.getReader();
-      const decoder = new TextDecoder();
-      let assistantResponse = "";
-      let textBuffer = "";
-      let streamDone = false;
-
+      const conversationId = conversationData.id;
       const assistantMessageId = `assistant-${Date.now()}`;
       setMessages((prev) => [
         ...prev,
@@ -151,54 +123,44 @@ const CampaignAssistant = ({ campaignId, campaignName }: Props) => {
         },
       ]);
 
-      while (!streamDone) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        textBuffer += decoder.decode(value, { stream: true });
+      const maxAttempts = 60;
+      let attempts = 0;
+      let responseReceived = false;
 
-        let newlineIndex: number;
-        while ((newlineIndex = textBuffer.indexOf("\n")) !== -1) {
-          let line = textBuffer.slice(0, newlineIndex);
-          textBuffer = textBuffer.slice(newlineIndex + 1);
+      while (attempts < maxAttempts && !responseReceived) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
 
-          if (line.endsWith("\r")) line = line.slice(0, -1);
-          if (line.startsWith(":") || line.trim() === "") continue;
-          if (!line.startsWith("data: ")) continue;
+        const { data: updatedConversation, error: fetchError } = await supabase
+          .from("Conversations")
+          .select("Response")
+          .eq("id", conversationId)
+          .maybeSingle();
 
-          const jsonStr = line.slice(6).trim();
-          if (jsonStr === "[DONE]") {
-            streamDone = true;
-            break;
-          }
-
-          try {
-            const parsed = JSON.parse(jsonStr);
-            const content = parsed.choices?.[0]?.delta?.content as string | undefined;
-            if (content) {
-              assistantResponse += content;
-              setMessages((prev) =>
-                prev.map((msg) =>
-                  msg.id === assistantMessageId
-                    ? { ...msg, content: assistantResponse }
-                    : msg
-                )
-              );
-            }
-          } catch {
-            textBuffer = line + "\n" + textBuffer;
-            break;
-          }
+        if (fetchError) {
+          console.error("Error fetching response:", fetchError);
+          attempts++;
+          continue;
         }
+
+        if (updatedConversation?.Response) {
+          setMessages((prev) =>
+            prev.map((msg) =>
+              msg.id === assistantMessageId
+                ? { ...msg, content: updatedConversation.Response }
+                : msg
+            )
+          );
+          responseReceived = true;
+        }
+
+        attempts++;
       }
 
-      await supabase.from("Conversations").insert([
-        {
-          Prompt: userMessage,
-          Response: assistantResponse,
-          user_id: user.id,
-          campaign_id: campaignId,
-        },
-      ]);
+      if (!responseReceived) {
+        throw new Error(
+          "Response timeout. The AI may still be processing your request."
+        );
+      }
     } catch (error: any) {
       console.error("Error sending message:", error);
       toast({
@@ -206,15 +168,16 @@ const CampaignAssistant = ({ campaignId, campaignName }: Props) => {
         description: error.message || "Failed to send message",
         variant: "destructive",
       });
-      setMessages((prev) => [
-        ...prev,
-        {
-          id: `error-${Date.now()}`,
-          content: `❌ ${error.message}`,
-          isUser: false,
-          timestamp: new Date(),
-        },
-      ]);
+      setMessages((prev) =>
+        prev.filter((msg) => msg.content !== "").concat([
+          {
+            id: `error-${Date.now()}`,
+            content: `Error: ${error.message}`,
+            isUser: false,
+            timestamp: new Date(),
+          },
+        ])
+      );
     } finally {
       setIsLoading(false);
     }
