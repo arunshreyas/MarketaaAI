@@ -29,15 +29,15 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-2xl shadow-floating w-[calc(100%-2rem)] max-w-6xl">
-      <div className="container mx-auto px-6 py-4">
+    <nav className="fixed top-3 md:top-6 left-1/2 transform -translate-x-1/2 z-50 glass-card border border-electric/20 rounded-xl md:rounded-2xl shadow-floating w-[calc(100%-1rem)] md:w-[calc(100%-2rem)] max-w-6xl">
+      <div className="container mx-auto px-4 md:px-6 py-3 md:py-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="font-heading text-2xl font-bold text-gradient flex items-center space-x-2">
-            <div className="w-8 h-8 rounded-lg gradient-electric glow-electric-subtle flex items-center justify-center">
-              <Sparkles className="w-4 h-4 text-white" />
+          <div className="font-heading text-lg md:text-2xl font-bold text-gradient flex items-center space-x-2">
+            <div className="w-7 h-7 md:w-8 md:h-8 rounded-lg gradient-electric glow-electric-subtle flex items-center justify-center">
+              <Sparkles className="w-3.5 h-3.5 md:w-4 md:h-4 text-white" />
             </div>
-            Marketa AI
+            <span className="hidden xs:inline">Marketa AI</span>
           </div>
 
           {/* Desktop Menu */}

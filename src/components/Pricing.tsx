@@ -69,20 +69,20 @@ const Pricing = () => {
   ];
 
   return (
-    <section id="pricing" className="py-12 relative">
-      <div className="container mx-auto px-6">
+    <section id="pricing" className="py-12 md:py-16 relative">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <div className="text-center mb-16">
           <Badge className="mb-4 gradient-electric text-primary-foreground">
             Pricing Plans
           </Badge>
-          <h2 className="text-4xl md:text-5xl font-bold font-heading mb-6">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-6">
             Choose Your
-            <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading leading-tight">
+            <span className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-3xl sm:text-4xl md:text-5xl font-bold font-heading leading-tight">
               Marketing Future
             </span>
           </h2>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+          <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto px-4">
             Start with our free trial, then choose the plan that scales with your business. 
             All plans include our core AI features with no setup fees.
           </p>

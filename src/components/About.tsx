@@ -68,8 +68,8 @@ const About = () => {
   ];
 
   return (
-    <section id="about" className="py-12 relative">
-      <div className="container mx-auto px-6">
+    <section id="about" className="py-12 md:py-16 relative">
+      <div className="container mx-auto px-4 md:px-6">
         {/* Section Header */}
         <FadeInOnScroll direction="up">
           <div className="text-center mb-16">
@@ -79,20 +79,20 @@ const About = () => {
             <SplitText 
               text="Building the Future of"
               tag="h2"
-              className="text-4xl md:text-5xl font-bold font-heading mb-2"
+              className="text-3xl sm:text-4xl md:text-5xl font-bold font-heading mb-2"
               splitType="words"
               staggerDelay={0.1}
             />
             <SplitText 
               text="Marketing Automation"
               tag="span"
-              className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-4xl md:text-5xl font-bold font-heading leading-tight"
+              className="bg-gradient-to-r from-electric to-electric-glow bg-clip-text text-transparent block text-3xl sm:text-4xl md:text-5xl font-bold font-heading leading-tight"
               splitType="words"
               staggerDelay={0.08}
               delay={0.5}
             />
             <FadeInOnScroll direction="up" delay={1}>
-              <p className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+              <p className="text-base sm:text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed px-4">
                 Marketa AI combines advanced artificial intelligence with deep marketing expertise 
                 to create campaigns that actually convert.
               </p>
