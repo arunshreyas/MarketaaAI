@@ -80,17 +80,6 @@ const Hero = () => {
             <SplitText text="with AI" tag="span" className="text-6xl md:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={1.2} />
           </div>
 
-          {/* Enhanced Badge */}
-          <FadeInOnScroll direction="down" delay={1.4}>
-            <div className="inline-flex items-center gap-3 px-7 py-4 rounded-2xl glass-card border border-electric/40 mb-8 mt-8 glow-electric-subtle hover-lift group transition-all duration-500">
-              <div className="w-2 h-2 bg-electric rounded-full animate-pulse"></div>
-              <Sparkles className="w-5 h-5 text-electric group-hover:scale-110 transition-transform" />
-              <span className="text-sm font-bold text-electric tracking-wide">Your AI Marketing Partner</span>
-              <div className="w-2 h-2 bg-electric-glow rounded-full animate-pulse" style={{
-              animationDelay: '1s'
-            }}></div>
-            </div>
-          </FadeInOnScroll>
 
           {/* Subheading */}
           <FadeInOnScroll direction="up" delay={1.6} duration={1}>
@@ -100,41 +89,38 @@ const Hero = () => {
             </p>
           </FadeInOnScroll>
 
-          {/* CTA Buttons */}
-          <AnimatedContent direction="vertical" delay={2} stagger={0.2}>
-            <div className="space-y-10">
-              {/* Waitlist Form */}
-              <div className="max-w-lg mx-auto">
-                <div className="text-center mb-6">
-                  <div className="inline-flex items-center gap-3 px-6 py-3 rounded-2xl glass-card border border-electric/40 mb-8 pulse-glow group">
-                    <div className="w-2 h-2 bg-electric rounded-full animate-pulse"></div>
-                    <Sparkles className="w-4 h-4 text-electric group-hover:rotate-12 transition-transform" />
-                    <span className="text-sm font-bold text-electric tracking-wide">Launching Q1 2025</span>
-                    <div className="w-2 h-2 bg-electric-glow rounded-full animate-pulse" style={{
-                    animationDelay: '0.5s'
-                  }}></div>
-                  </div>
-                  <p className="text-muted-foreground/80 text-xl font-light">
-                    Join our waitlist to be first in line for early access
-                  </p>
+          {/* CTA Section */}
+          <AnimatedContent direction="vertical" delay={1.6}>
+            <div className="max-w-xl mx-auto mt-12">
+              <div className="text-center mb-6">
+                <div className="inline-flex items-center gap-2 px-5 py-2 rounded-full glass-card border border-electric/30 mb-6">
+                  <Sparkles className="w-4 h-4 text-electric" />
+                  <span className="text-sm font-semibold text-electric">Launching Q1 2025</span>
                 </div>
-                <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-4">
-                  <Input type="email" placeholder="Enter your email address" value={email} onChange={e => setEmail(e.target.value)} required className="flex-1 h-14 input-modern text-lg focus-ring" disabled={isSubmitting} />
-                  <Button type="submit" size="lg" className="btn-modern gradient-electric glow-electric group h-14 px-10 text-lg font-bold relative overflow-hidden" disabled={isSubmitting}>
-                    <span className="relative z-10">{isSubmitting ? "Joining..." : "Join Waitlist"}</span>
-                    <ArrowRight className="ml-3 w-5 h-5 group-hover:translate-x-1 transition-spring relative z-10" />
-                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-700"></div>
-                  </Button>
-                </form>
+                <p className="text-muted-foreground text-lg mb-6">
+                  Join the waitlist for early access
+                </p>
               </div>
-              
-              {/* Demo Button */}
-              <div className="flex justify-center">
-                <Button variant="outline" size="lg" className="btn-modern text-lg px-10 py-4 border-electric/40 hover:border-electric/80 hover:bg-electric/15 hover-lift glass-card group relative overflow-hidden">
-                  <span className="relative z-10">Try Demo</span>
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-electric/10 to-transparent transform -translate-x-full group-hover:translate-x-full transition-transform duration-500"></div>
+              <form onSubmit={handleWaitlistSubmit} className="flex flex-col sm:flex-row gap-3">
+                <Input 
+                  type="email" 
+                  placeholder="Enter your email" 
+                  value={email} 
+                  onChange={e => setEmail(e.target.value)} 
+                  required 
+                  className="flex-1 h-12 text-base" 
+                  disabled={isSubmitting} 
+                />
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="btn-modern gradient-electric group h-12 px-8 font-semibold" 
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "Joining..." : "Get Early Access"}
+                  <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Button>
-              </div>
+              </form>
             </div>
           </AnimatedContent>
 
