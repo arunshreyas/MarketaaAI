@@ -13,26 +13,26 @@ const Tutorial = () => {
   const steps = [
     {
       icon: Sparkles,
-      title: "Welcome to Marketa AI",
-      description: "Your AI-powered marketing assistant that learns your brand and creates campaigns that convert.",
+      title: "Welcome to Your Dashboard",
+      description: "This is your marketing command center. Let's show you how to get started with creating powerful AI-driven campaigns.",
       action: "Let's get started"
     },
     {
       icon: Target,
-      title: "Join the Waitlist",
-      description: "Enter your email in the hero section to get early access when we launch in Q1 2025.",
+      title: "Create Your First Campaign",
+      description: "Click the 'New Campaign' button to start creating a campaign. Define your objectives, select channels, and set your budget.",
       action: "Next"
     },
     {
       icon: BarChart3,
-      title: "Explore Features",
-      description: "Scroll down to discover how Marketa AI will save you time, maintain brand consistency, and optimize campaigns.",
+      title: "Use the AI Assistant",
+      description: "Navigate to the Assistant page from the sidebar. Chat with your AI marketing assistant to get strategic advice and content ideas.",
       action: "Next"
     },
     {
       icon: Zap,
-      title: "Choose Your Plan",
-      description: "Check out our pricing plans and find the perfect fit for your business needs.",
+      title: "Review Campaign Analytics",
+      description: "Track your campaigns in the Campaigns section. Click on any campaign to view detailed analytics and chat with the campaign-specific assistant.",
       action: "Get Started"
     }
   ];
