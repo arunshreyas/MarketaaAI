@@ -70,20 +70,20 @@ const Hero = () => {
       <div className="container mx-auto px-6 relative z-10">
         <div className="max-w-5xl mx-auto text-center">
           {/* Main Heading */}
-          <div className="mb-0">
-            <SplitText text="Transform Your" tag="h1" className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={0.4} />
+          <div className="mb-0 px-2">
+            <SplitText text="Transform Your" tag="h1" className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={0.4} />
             <FadeInOnScroll direction="up" delay={0.8} duration={1}>
-              <span className="text-gradient block text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-heading leading-relaxed tracking-tight">
+              <span className="text-gradient block text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-heading leading-relaxed tracking-tight">
                 Digital Marketing
               </span>
             </FadeInOnScroll>
-            <SplitText text="with AI" tag="span" className="text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={1.2} />
+            <SplitText text="with AI" tag="span" className="text-3xl sm:text-4xl md:text-6xl lg:text-7xl xl:text-8xl font-bold font-heading leading-tight tracking-tight" staggerDelay={0.1} delay={1.2} />
           </div>
 
 
           {/* Subheading */}
           <FadeInOnScroll direction="up" delay={1.6} duration={1}>
-            <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground/90 mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed mt-6 md:mt-8 font-light px-4">
+            <p className="text-sm sm:text-base md:text-lg lg:text-xl text-muted-foreground/90 mb-6 sm:mb-8 md:mb-12 max-w-4xl mx-auto leading-relaxed mt-4 sm:mt-6 md:mt-8 font-light px-4">
               Marketa AI learns your business, crafts campaigns that resonate, and delivers results 
               without the complexity. <span className="text-foreground font-medium">Your brand's creative spark, strategist, and growth engine</span>—all in one.
             </p>
@@ -91,13 +91,13 @@ const Hero = () => {
 
           {/* CTA Section */}
           <AnimatedContent direction="vertical" delay={1.6}>
-            <div className="max-w-xl mx-auto mt-8 md:mt-12 px-4">
-              <div className="text-center mb-6">
-                <div className="inline-flex items-center gap-2 px-4 md:px-5 py-2 rounded-full glass-card border border-electric/30 mb-6">
-                  <Sparkles className="w-4 h-4 text-electric" />
+            <div className="max-w-xl mx-auto mt-6 sm:mt-8 md:mt-12 px-4">
+              <div className="text-center mb-4 sm:mb-6">
+                <div className="inline-flex items-center gap-2 px-3 sm:px-4 md:px-5 py-1.5 sm:py-2 rounded-full glass-card border border-electric/30 mb-4 sm:mb-6">
+                  <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-electric" />
                   <span className="text-xs sm:text-sm font-semibold text-electric">Launching Q1 2025</span>
                 </div>
-                <p className="text-muted-foreground text-base md:text-lg mb-6">
+                <p className="text-muted-foreground text-sm sm:text-base md:text-lg mb-4 sm:mb-6">
                   Join the waitlist for early access
                 </p>
               </div>
